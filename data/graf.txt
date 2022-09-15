@@ -1,0 +1,1 @@
+{"Tmin": 0, "Xmax": 5, "function_y_t": "0.2*t*sin(t)", "function_x_t": "0.3*t*cos(t)", "parametric": 0, "Tmax": 15, "Ymax": 1.2, "Ymin": -1.5, "Xmin": -5, "function": "2*cos(x)"}
