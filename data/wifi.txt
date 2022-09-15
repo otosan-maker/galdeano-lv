@@ -1,0 +1,1 @@
+{"network": "SSID", "startupInit": false, "password": "**--**"}
