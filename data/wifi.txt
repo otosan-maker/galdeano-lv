@@ -1,1 +1,1 @@
-{"network": "SSID", "startupInit": false, "password": "**--**"}
+{"network": "bencab", "startupInit": false, "password": "bencab"}

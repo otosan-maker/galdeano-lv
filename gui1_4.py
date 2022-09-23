@@ -1,6 +1,5 @@
 import lvgl as lv
 import teclado
-import os
 import json
 import galdeanolib as gal
 import guiHeader

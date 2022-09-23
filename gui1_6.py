@@ -9,7 +9,7 @@ import errorMsgBox as error
 #####################################
 #             cibus tabula
 #####################################
-#decoracion
+
 
 ct_locations = [" ","congelador","carne","pescado"]
 ct_selected_location = None

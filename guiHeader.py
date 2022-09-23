@@ -65,3 +65,4 @@ class guiHeader:
         else:
             self.wifiLabel.set_text("")
         return
+    

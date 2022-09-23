@@ -6,6 +6,12 @@ import gui1_4
 import gui1_5
 import gui1_6
 import gui1_7
+import guiObj1
+import guiObj2
+import guiObj3
+import guiObj4
+import guiObj5
+import guiObj6
 import teclado
 
 #####################################
@@ -16,14 +22,13 @@ import teclado
 
 pantalla_sel = None
 
-Gal_pantallas = [{"Name":"Calculadora","function":gui1.execScreen},
-                 {"Name":"Editor","function":gui1_3.execScreen },
-                 {"Name":"Graficas","function":gui1_2.execScreen},
-                 {"Name":"Conf","function":gui1_4.execScreen },
-                 {"Name":"Wifi","function":gui1_5.execScreenConf},
-                 {"Name":"Domotica","function":gui1_5.execScreen},
-                 {"Name":"CibusTab","function":gui1_6.execScreen},
-                 {"Name":"Peso","function":gui1_7.execScreen}
+
+Gal_pantallas = [{"Name":"Calculadora","function":guiObj1.guiObj1},
+                 {"Name":"Editor","function":guiObj3.guiObj3 },
+                 {"Name":"Graficas","function":guiObj2.guiObj2},
+                 {"Name":"Domotica","function":guiObj4.guiObj4},
+                 {"Name":"CibusTab","function":guiObj5.guiObj5},
+                 {"Name":"Peso","function":guiObj6.guiObj6}
                  ]
 
 
@@ -41,10 +46,13 @@ def pantalla_sel_event_handler(evt):
         miTeclado = teclado.teclado()
         miTeclado.graphCursor = None
         
+        
         for pantalla in Gal_pantallas:
             if pantalla['Name'] == txt:
                 pantalla_sel=None
-                pantalla['function']()
+                meGuiObj = pantalla['function']()
+                meGuiObj.execScreen()
+                miTeclado.ObjActive = meGuiObj
 
 def select():
     global pantalla_sel
@@ -71,12 +79,9 @@ def select():
     pantalla_sel.align(lv.ALIGN.CENTER, 0, 0)
     pantalla_sel.add_event_cb(pantalla_sel_event_handler, lv.EVENT.ALL, None)
 
-def openGraf(event):
-    obj=lv.scr_act()
-    obj.clean()
-    gui1_2.execScreen()
 
 def openWifiConf():
     obj=lv.scr_act()
     obj.clean()
-    gui1_5.execScreenConf()
+    mObj = guiObj4.guiObj4()
+    mObj.execScreenConf()

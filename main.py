@@ -1,7 +1,7 @@
 import lvgl as lv
 from ili9XXX import ili9341
 from xpt2046 import xpt2046
-import gui1
+import guiObj1
 import comunication as comu
 import machine, os, lv_spi, sdcard
 
@@ -31,7 +31,7 @@ tim0.init(period=100, mode=Timer.PERIODIC, callback=lambda t:miTeclado.key_loop(
 comu.startUpWifi()
 comu.onTimerWifi()
 
-
-gui1.execScreen()
-
+meGuiObj = guiObj1.guiObj1()
+meGuiObj.execScreen()
+miTeclado.ObjActive = meGuiObj
 

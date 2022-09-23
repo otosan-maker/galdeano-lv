@@ -30,7 +30,6 @@ def execScreen():
     miCabecera = guiHeader.guiHeader()
     miCabecera.strTitle="Galdeano CAS 05"
     miCabecera.setHeader()
-    #gal.setHeader("Galdeano CAS 05",miTeclado)
     
     
     styleTAInput = lv.style_t()
