@@ -22,10 +22,18 @@ obj=lv.scr_act()
 # os.mount(sd, "/sd")
 # print(os.listdir('/sd'))
 
+# def logTime():
+#     f=open("/data/time.log","a")
+#     f.write("600000 milisegundos\n")
+#     f.close()
+
 miTeclado = teclado.teclado()
 
 tim0 = Timer(1)
 tim0.init(period=100, mode=Timer.PERIODIC, callback=lambda t:miTeclado.key_loop())
+
+# logger = Timer(3)
+# logger.init(period=60000, mode=Timer.PERIODIC, callback=lambda t:logTime())
 
 
 comu.startUpWifi()

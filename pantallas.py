@@ -1,11 +1,4 @@
 import lvgl as lv
-import gui1
-import gui1_2
-import gui1_3
-import gui1_4
-import gui1_5
-import gui1_6
-import gui1_7
 import guiObj1
 import guiObj2
 import guiObj3
