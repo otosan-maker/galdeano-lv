@@ -57,12 +57,7 @@ class guiObj1(guiBase):
         self.miCabecera = guiHeader.guiHeader()
         self.miCabecera.strTitle="Galdeano CAS"
         self.miCabecera.setHeader()
-        
-        print(self.cmdIndex)
-        print(self.cmdList)
-        print(self.taText)
-        print(self.labelText)
-        
+
         styleTAInput = lv.style_t()
         styleTAInput.init()
         #styleTAInput.set_bg_color(lv.color_hex(0xF0F0FF))
