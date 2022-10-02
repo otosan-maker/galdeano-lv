@@ -412,7 +412,7 @@ class guiObj2(guiBase):
         label_btn2 = lv.label(btn2)
         label_btn2.align_to(btn2, lv.ALIGN.TOP_LEFT, 0, -4)
         label_btn2.set_text("Funct")
-        btn2.add_event_cb(lambda e: gal.dic(e,ta,btn2) , lv.EVENT.CLICKED, None)
+        btn2.add_event_cb(lambda e: self.dic(e,ta,btn2) , lv.EVENT.CLICKED, None)
         
         btn3 = lv.btn(lv.scr_act())
         btn3.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 161, 212)
@@ -420,7 +420,7 @@ class guiObj2(guiBase):
         label_btn3 = lv.label(btn3)
         label_btn3.align_to(btn3, lv.ALIGN.TOP_LEFT, 0, -4)
         label_btn3.set_text( "Trigon" )
-        btn3.add_event_cb(lambda e: gal.trig2(e,ta), lv.EVENT.CLICKED, None)
+        btn3.add_event_cb(lambda e: self.trig2(e,ta), lv.EVENT.CLICKED, None)
         
         btn4 = lv.btn(lv.scr_act())
         btn4.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 240, 212)

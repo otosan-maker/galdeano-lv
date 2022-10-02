@@ -161,9 +161,9 @@ class guiObj3(guiBase):
         btn4.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 206, 212)
         btn4.set_size(53,25)
         label_btn4 = lv.label(btn4)
-        label_btn4.set_text("Dic")
+        label_btn4.set_text("Fun")
         label_btn4.align_to(btn4, lv.ALIGN.TOP_LEFT, 0, -4)
-        btn4.add_event_cb(lambda e: gal.dic(e,self.ta,btn4), lv.EVENT.CLICKED, None)
+        btn4.add_event_cb(lambda e: self.dic(e,self.ta,btn4), lv.EVENT.CLICKED, None)
 
         btn5 = lv.btn(lv.scr_act())
         btn5.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 261, 212)
@@ -171,7 +171,7 @@ class guiObj3(guiBase):
         label_btn5 = lv.label(btn5)
         label_btn5.set_text("CLS")
         label_btn5.align_to(btn5, lv.ALIGN.TOP_LEFT, 0, -4)
-        btn5.add_event_cb(lambda e: gal.cls(e,self.ta,None), lv.EVENT.CLICKED, None)
+        btn5.add_event_cb(lambda e: self.cls(e,self.ta,None), lv.EVENT.CLICKED, None)
 
         
     
