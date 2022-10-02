@@ -5,7 +5,7 @@ import guiObj3
 import guiObj4
 import guiObj5
 import guiObj6
-import guiObj7
+#import guiObj7
 import teclado
 
 #####################################
@@ -17,14 +17,14 @@ import teclado
 pantalla_sel = None
 
 
-Gal_pantallas = [{"Name":"Calculadora","function":guiObj1.guiObj1},
-                 {"Name":"Editor","function":guiObj3.guiObj3 },
-                 {"Name":"Graficas","function":guiObj2.guiObj2},
-                 {"Name":"Domotica","function":guiObj4.guiObj4},
-                 {"Name":"CibusTab","function":guiObj5.guiObj5},
-                 {"Name":"Peso","function":guiObj6.guiObj6},
-                 {"Name":"CLI","function":guiObj7.guiObj7},
-                 {"Name":"CLI","function":guiObj7.guiObj7}
+Gal_pantallas = [{"Name":"Calculadora","function":guiObj1.guiObj1}
+                 ,{"Name":"Editor","function":guiObj3.guiObj3 }
+                 ,{"Name":"Graficas","function":guiObj2.guiObj2}
+                 ,{"Name":"Domotica","function":guiObj4.guiObj4}
+                 ,{"Name":"CibusTab","function":guiObj5.guiObj5}
+                 ,{"Name":"Peso","function":guiObj6.guiObj6}
+#                  ,{"Name":"CLI","function":guiObj7.guiObj7}
+#                  ,{"Name":"CLI","function":guiObj7.guiObj7}
                  ]
 
 
@@ -37,8 +37,6 @@ def pantalla_sel_event_handler(evt):
         id = obj.get_selected_btn()
         txt = obj.get_btn_text(id)
         pantalla_sel.delete()
-        obj=lv.scr_act()
-        obj.clean()
         miTeclado = teclado.teclado()
         miTeclado.graphCursor = None
         
@@ -47,6 +45,7 @@ def pantalla_sel_event_handler(evt):
             if pantalla['Name'] == txt:
                 pantalla_sel=None
                 meGuiObj = pantalla['function']()
+                meGuiObj.clearScreen()
                 meGuiObj.execScreen()
                 miTeclado.ObjActive = meGuiObj
 

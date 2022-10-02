@@ -42,4 +42,3 @@ comu.onTimerWifi()
 meGuiObj = guiObj1.guiObj1()
 meGuiObj.execScreen()
 miTeclado.ObjActive = meGuiObj
-

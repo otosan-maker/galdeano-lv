@@ -32,3 +32,4 @@ class guiBase():
         label = lv.label(lv.scr_act())
         label.set_text("execScreenConf")
         label.center()
+
