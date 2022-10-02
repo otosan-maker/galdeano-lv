@@ -5,6 +5,7 @@ import guiObj3
 import guiObj4
 import guiObj5
 import guiObj6
+import guiObj7
 import teclado
 
 #####################################
@@ -21,7 +22,9 @@ Gal_pantallas = [{"Name":"Calculadora","function":guiObj1.guiObj1},
                  {"Name":"Graficas","function":guiObj2.guiObj2},
                  {"Name":"Domotica","function":guiObj4.guiObj4},
                  {"Name":"CibusTab","function":guiObj5.guiObj5},
-                 {"Name":"Peso","function":guiObj6.guiObj6}
+                 {"Name":"Peso","function":guiObj6.guiObj6},
+                 {"Name":"CLI","function":guiObj7.guiObj7},
+                 {"Name":"CLI","function":guiObj7.guiObj7}
                  ]
 
 

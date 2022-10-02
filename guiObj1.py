@@ -11,7 +11,10 @@ class guiObj1(guiBase):
         super().__init__()
     
     def emathp_exe(self,e,ta,label):
-        label.set_text(eigenmath.run(ta.get_text()) )
+        oldText = label.get_text()
+        newText= ">>> "+ ta.get_text() +"\n" + eigenmath.run(ta.get_text()) +"\n" + oldText
+        label.set_text( newText )
+        ta.set_text("")
     
 
     def execScreen(self):
