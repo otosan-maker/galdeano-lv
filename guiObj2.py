@@ -158,6 +158,65 @@ class guiObj2(guiBase):
             if len(points)>0 :
                 self.listPto.append(points)
                 
+    #hace unas sola llamada a eigenmath
+    def calcPoints2(self):
+        rangoGraph=gal.data
+        points =  [ ]
+        
+        if rangoGraph["parametric"] == lv.STATE.CHECKED:
+            FXT=rangoGraph['function_x_t']
+            FYT=rangoGraph['function_y_t']
+        else:
+            F=rangoGraph['function']
+        #for(a,1,319,x=-5+10*a/320,print(float(eval(x^2))))
+        if rangoGraph["parametric"] == lv.STATE.CHECKED:
+            Delta = (rangoGraph['Tmax']-rangoGraph['Tmin'])/320
+            EigenmathCMD_X = 'for(a,0,319,print(float(eval('+FXT+',t,'+str(rangoGraph['Tmin'])+'+'+str(Delta)+'*a))))'
+            EigenmathCMD_Y = 'for(a,0,319,print(float(eval('+FYT+',t,'+str(rangoGraph['Tmin'])+'+'+str(Delta)+'*a))))'
+            EigenmathResultXT = eigenmath.run(EigenmathCMD_X )
+            EigenmathResultYT = eigenmath.run(EigenmathCMD_Y )
+            XgraphList = eval('['+EigenmathResultXT+']')
+            YgraphList = eval('['+EigenmathResultYT+']')
+            for self.Tpixel in range (0,319):
+                Xgraph=XgraphList[self.Tpixel]
+                Xpixel=(Xgraph-rangoGraph['Xmax'])*320/(rangoGraph['Xmin']-rangoGraph['Xmax'])
+                Ygraph=YgraphList[self.Tpixel]
+                Ypixel=(Ygraph-rangoGraph['Ymax'])*218/(rangoGraph['Ymin']-rangoGraph['Ymax'])
+                if Ypixel >0 and Ypixel <=216 and Xpixel >0 and Xpixel <320 :
+                    pointFuntion = lv.point_t()
+                    pointFuntion.x=ceil(Xpixel)
+                    pointFuntion.y=ceil(Ypixel)
+                    points.append(pointFuntion)
+                else :
+                    if len(points)>0 :
+                        self.listPto.append(points)
+                        points = []
+            if len(points)>0 :
+                self.listPto.append(points)
+        else:
+            Delta=(rangoGraph['Xmax']-rangoGraph['Xmin'])/320
+            EigenmathCMD = 'for(a,0,319,print(float(eval('+F+',x,'+str(rangoGraph['Xmin'])+'+'+str(Delta)+'*a))))'
+            print(EigenmathCMD)
+            EigenmathResultYT = eigenmath.run(EigenmathCMD )
+            #print(EigenmathResultXT)
+            YgraphList = eval('['+EigenmathResultYT+']')
+            #print(YgraphList)
+            for self.Tpixel in range (0,319):
+                Ygraph=YgraphList[self.Tpixel]
+                Ypixel=(Ygraph-rangoGraph['Ymax'])*218/(rangoGraph['Ymin']-rangoGraph['Ymax'])
+                Xpixel = self.Tpixel
+                if Ypixel >0 and Ypixel <=216 and Xpixel >0 and Xpixel <320 :
+                    pointFuntion = lv.point_t()
+                    pointFuntion.x=ceil(Xpixel)
+                    pointFuntion.y=ceil(Ypixel)
+                    points.append(pointFuntion)
+                else :
+                    if len(points)>0 :
+                        self.listPto.append(points)
+                        points = []
+            if len(points)>0 :
+                self.listPto.append(points)
+                
                 
     def execScreen(self):    
         rangoGraph=gal.data
@@ -177,10 +236,7 @@ class guiObj2(guiBase):
         self.miCabecera.setHeader()
        
         Xpixel0 =  rangoGraph['Xmin']*320/(rangoGraph['Xmin']-rangoGraph['Xmax'])  
-        print( Xpixel0 )
-
         Ypixel0=-rangoGraph['Ymax']*218 / (rangoGraph['Ymin']-rangoGraph['Ymax'])
-        print( Ypixel0 )
         
         
         p= lv.point_t()
@@ -218,7 +274,7 @@ class guiObj2(guiBase):
         
         
         #calculamos los puntos de la grafica
-        self.calcPoints()
+        self.calcPoints2()
 
             
 
@@ -226,7 +282,7 @@ class guiObj2(guiBase):
         
         #ahora pintamos todas las lineas que hay en las listas de puntos
         for points in self.listPto:
-            print( len(points) )
+            #print( len(points) )
             line1 = lv.line(lv.scr_act())
             line1.set_points(points, len(points) )
             points.clear()
