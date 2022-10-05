@@ -15,9 +15,17 @@ class guiObj2(guiBase):
     def __init__(self):
         super().__init__()
     
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+          cls.instance = super(guiObj2, cls).__new__(cls)
+        return cls.instance
+    
     Tpixel=0
     puntoLabel = None
     puntoCruz = None
+    
+    listPto = [] # es una lista de puntos donde guardamos las listas de puntos a dibujar.
+    listPtoClean = False
     
     def gestTeclado(self,key):        
         line_points = [ {"x":0, "y":0}, 
@@ -99,18 +107,68 @@ class guiObj2(guiBase):
         print("Set text : "+str(Xpixel)+","+str(Ypixel) + "T:"+ str(self.Tpixel))
         self.puntoLabel.set_text("#ff0000 ("+str( Xgraph )+","+str( Ygraph )+")#")
 
-  
-    def execScreen(self):    
+    def calcPoints(self):
         rangoGraph=gal.data
         points =  [ ]
+        
+        if rangoGraph["parametric"] == lv.STATE.CHECKED:
+            FXT=rangoGraph['function_x_t']
+            FYT=rangoGraph['function_y_t']
+        else:
+            F=rangoGraph['function']
+
+        for self.Tpixel in range (0,319):
+            if rangoGraph["parametric"] == lv.STATE.CHECKED:
+                Tgraph=rangoGraph['Tmin']+(rangoGraph['Tmax']-rangoGraph['Tmin'])*self.Tpixel/320
+                EigenmathCMD = 'eval('+FXT+',t,'+str(Tgraph)+')'
+                EigenmathResultXT = eigenmath.run(EigenmathCMD )
+                EigenmathCMD = 'eval('+FYT+',t,'+str(Tgraph)+')'
+                EigenmathResultYT = eigenmath.run(EigenmathCMD )
+                try:
+                    #ponemos esto porque a veces eigenmath devuelve algo al estilo 2 * 10^-5, pero lo formatea en dos lineas y no se puede evaluar por `python
+                    Xgraph=eval(EigenmathResultXT)
+                    Xpixel=(Xgraph-rangoGraph['Xmax'])*320/(rangoGraph['Xmin']-rangoGraph['Xmax'])
+                    Ygraph=eval(EigenmathResultYT)
+                    Ypixel=(Ygraph-rangoGraph['Ymax'])*218/(rangoGraph['Ymin']-rangoGraph['Ymax'])
+                except:
+                    print("Exception")
+                    Xpixel=0
+                    Ypixel=0
+            else:
+                Xpixel=self.Tpixel
+                Xgraph=rangoGraph['Xmin']+(rangoGraph['Xmax']-rangoGraph['Xmin'])*Xpixel/320
+                EigenmathCMD = 'eval('+F+',x,'+str(Xgraph)+')'
+                EigenmathResult = eigenmath.run(EigenmathCMD )
+                try:
+                    #ponemos esto porque a veces eigenmath devuelve algo al estilo 2 * 10^-5, pero lo formatea en dos lineas y no se puede evaluar por `python
+                    Ygraph=eval(EigenmathResult)
+                    Ypixel=(Ygraph-rangoGraph['Ymax'])*218/(rangoGraph['Ymin']-rangoGraph['Ymax'])
+                except:
+                    Ypixel=0
+            
+            if Ypixel >0 and Ypixel <=216 and Xpixel >0 and Xpixel <320 :
+                pointFuntion = lv.point_t()
+                pointFuntion.x=ceil(Xpixel)
+                pointFuntion.y=ceil(Ypixel)
+                points.append(pointFuntion)
+            else :
+                if len(points)>0 :
+                    self.listPto.append(points)
+                    points = []
+            if len(points)>0 :
+                self.listPto.append(points)
+                
+                
+    def execScreen(self):    
+        rangoGraph=gal.data
         pointsY =  []
         pointsX =  []
+        
         self.puntoLabel = None
         self.puntoCruz = None
         miTeclado = teclado.teclado()
         miTeclado.graphCursor = self.gestTeclado
         miTeclado.taWidget = None
-        import pantallas
 
         
         #Interfaz grafico
@@ -158,59 +216,17 @@ class guiObj2(guiBase):
         ejeY.add_style(style_line, 0)
         ejeY.align(lv.ALIGN.TOP_LEFT, 0, 22)
         
-        if rangoGraph["parametric"] == lv.STATE.CHECKED:
-            FXT=rangoGraph['function_x_t']
-            FYT=rangoGraph['function_y_t']
-        else:
-            F=rangoGraph['function']
-    #        print(F)
-        #definimos la funcion a graficar
-    #     EigenmathCMD='F(x)='+rangoGraph['function']
-    #     EigenmathResult = eigenmath.run(EigenmathCMD )
-    #     print(EigenmathResult )
-        numPoints=0
-        for self.Tpixel in range (0,319):
-            if rangoGraph["parametric"] == lv.STATE.CHECKED:
-                Tgraph=rangoGraph['Tmin']+(rangoGraph['Tmax']-rangoGraph['Tmin'])*self.Tpixel/320
-                EigenmathCMD = 'eval('+FXT+',t,'+str(Tgraph)+')'
-                EigenmathResultXT = eigenmath.run(EigenmathCMD )
-                EigenmathCMD = 'eval('+FYT+',t,'+str(Tgraph)+')'
-                EigenmathResultYT = eigenmath.run(EigenmathCMD )
-                try:
-                    #ponemos esto porque a veces eigenmath devuelve algo al estilo 2 * 10^-5, pero lo formatea en dos lineas y no se puede evaluar por `python
-                    Xgraph=eval(EigenmathResultXT)
-                    Xpixel=(Xgraph-rangoGraph['Xmax'])*320/(rangoGraph['Xmin']-rangoGraph['Xmax'])
-                    Ygraph=eval(EigenmathResultYT)
-                    Ypixel=(Ygraph-rangoGraph['Ymax'])*218/(rangoGraph['Ymin']-rangoGraph['Ymax'])
-                except:
-                    print("Exception")
-                    Xpixel=0
-                    Ypixel=0
-            else:
-                Xpixel=self.Tpixel
-                Xgraph=rangoGraph['Xmin']+(rangoGraph['Xmax']-rangoGraph['Xmin'])*Xpixel/320
-                EigenmathCMD = 'eval('+F+',x,'+str(Xgraph)+')'
-                EigenmathResult = eigenmath.run(EigenmathCMD )
-                try:
-                    #ponemos esto porque a veces eigenmath devuelve algo al estilo 2 * 10^-5, pero lo formatea en dos lineas y no se puede evaluar por `python
-                    Ygraph=eval(EigenmathResult)
-                    Ypixel=(Ygraph-rangoGraph['Ymax'])*218/(rangoGraph['Ymin']-rangoGraph['Ymax'])
-                except:
-                    Ypixel=0
+        
+        #calculamos los puntos de la grafica
+        self.calcPoints()
+
             
-            if Ypixel >0 and Ypixel <=216 and Xpixel >0 and Xpixel <320 :
-                pointFuntion = lv.point_t()
-                pointFuntion.x=ceil(Xpixel)
-                pointFuntion.y=ceil(Ypixel)
-                points.append(pointFuntion)
-            else :
-                if len(points)>0 :
-                    line1 = lv.line(lv.scr_act())
-                    line1.set_points(points, len(points) )
-                    points.clear()
-                    line1.align(lv.ALIGN.TOP_LEFT, 0, 22)
-        #si hay algun punto ... hay que dibujarlo
-        if len(points)>0 :
+
+        
+        
+        #ahora pintamos todas las lineas que hay en las listas de puntos
+        for points in self.listPto:
+            print( len(points) )
             line1 = lv.line(lv.scr_act())
             line1.set_points(points, len(points) )
             points.clear()
