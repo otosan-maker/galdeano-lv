@@ -8,7 +8,7 @@ import galdeanolib as gal
 import json
 import guiHeader
 from guiBase import guiBase
-
+import time
 
 
 class guiObj2(guiBase):
@@ -25,7 +25,6 @@ class guiObj2(guiBase):
     puntoCruz = None
     
     listPto = [] # es una lista de puntos donde guardamos las listas de puntos a dibujar.
-    listPtoClean = False
     
     def gestTeclado(self,key):        
         line_points = [ {"x":0, "y":0}, 
@@ -104,7 +103,7 @@ class guiObj2(guiBase):
             Xoffset=-120
         self.puntoLabel.set_pos(ceil(Xpixel+Xoffset), ceil(Ypixel+Yoffset))
         self.puntoCruz.set_pos(ceil(Xpixel)-2, ceil(Ypixel)+20)
-        print("Set text : "+str(Xpixel)+","+str(Ypixel) + "T:"+ str(self.Tpixel))
+        #print("Set text : "+str(Xpixel)+","+str(Ypixel) + "T:"+ str(self.Tpixel))
         self.puntoLabel.set_text("#ff0000 ("+str( Xgraph )+","+str( Ygraph )+")#")
 
     def calcPoints(self):
@@ -196,7 +195,7 @@ class guiObj2(guiBase):
         else:
             Delta=(rangoGraph['Xmax']-rangoGraph['Xmin'])/320
             EigenmathCMD = 'for(a,0,319,print(float(eval('+F+',x,'+str(rangoGraph['Xmin'])+'+'+str(Delta)+'*a))))'
-            print(EigenmathCMD)
+            #print(EigenmathCMD)
             EigenmathResultYT = eigenmath.run(EigenmathCMD )
             #print(EigenmathResultXT)
             YgraphList = eval('['+EigenmathResultYT+']')
@@ -273,10 +272,19 @@ class guiObj2(guiBase):
         ejeY.align(lv.ALIGN.TOP_LEFT, 0, 22)
         
         
+        inic=time.time_ns()
         #calculamos los puntos de la grafica
         self.calcPoints2()
-
-            
+        print( time.time_ns() - inic )
+        
+#         calcPoints2()
+#         920778000
+#         824597000
+#         823171000
+#         calcPoints()
+#         2274446000
+#         2174546000
+#         2191135000
 
         
         
@@ -356,7 +364,7 @@ class guiObj2(guiBase):
     def execScreenConf(self):
         self.miCabecera.strTitle="Galdeano graphics"
         self.miCabecera.setHeader()
-        
+
         data = gal.data
     
         miTeclado = teclado.teclado()

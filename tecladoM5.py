@@ -54,10 +54,16 @@ class teclado:
                     self.idCntl=False
                     if self.cntWidget!=None:
                         self.cntWidget.set_text("")
+                    if self.ObjActive !=None:
+                        self.ObjActive.clearScreen()
+                        self.ObjActive.execScreen()
                 else:
                     self.idCntl=True
                     if self.cntWidget!=None:
-                        self.cntWidget.set_text("cnt")
+                        self.cntWidget.set_text("conf")
+                    if self.ObjActive !=None:
+                        self.ObjActive.clearScreen()
+                        self.ObjActive.execScreenConf()
             elif(c==b'0x200'):
                 self.idMode=self.idMode+1
                 if (self.idMode>2):
