@@ -8,16 +8,23 @@ import galdeanolib as gal
 import json
 import guiHeader
 from guiBase import guiBase
-
+import time
 
 
 class guiObj2(guiBase):
     def __init__(self):
         super().__init__()
     
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+          cls.instance = super(guiObj2, cls).__new__(cls)
+        return cls.instance
+    
     Tpixel=0
     puntoLabel = None
     puntoCruz = None
+    
+    listPto = [] # es una lista de puntos donde guardamos las listas de puntos a dibujar.
     
     def gestTeclado(self,key):        
         line_points = [ {"x":0, "y":0}, 
@@ -96,79 +103,19 @@ class guiObj2(guiBase):
             Xoffset=-120
         self.puntoLabel.set_pos(ceil(Xpixel+Xoffset), ceil(Ypixel+Yoffset))
         self.puntoCruz.set_pos(ceil(Xpixel)-2, ceil(Ypixel)+20)
-        print("Set text : "+str(Xpixel)+","+str(Ypixel) + "T:"+ str(self.Tpixel))
+        #print("Set text : "+str(Xpixel)+","+str(Ypixel) + "T:"+ str(self.Tpixel))
         self.puntoLabel.set_text("#ff0000 ("+str( Xgraph )+","+str( Ygraph )+")#")
 
-  
-    def execScreen(self):    
+    def calcPoints(self):
         rangoGraph=gal.data
         points =  [ ]
-        pointsY =  []
-        pointsX =  []
-        self.puntoLabel = None
-        self.puntoCruz = None
-        miTeclado = teclado.teclado()
-        miTeclado.graphCursor = self.gestTeclado
-        miTeclado.taWidget = None
-        import pantallas
-
-        
-        #Interfaz grafico
-        self.miCabecera = guiHeader.guiHeader()
-        self.miCabecera.strTitle="Galdeano graphics"
-        self.miCabecera.setHeader()
-       
-        Xpixel0 =  rangoGraph['Xmin']*320/(rangoGraph['Xmin']-rangoGraph['Xmax'])  
-        print( Xpixel0 )
-
-        Ypixel0=-rangoGraph['Ymax']*218 / (rangoGraph['Ymin']-rangoGraph['Ymax'])
-        print( Ypixel0 )
-        
-        
-        p= lv.point_t()
-        p.x=ceil(Xpixel0)
-        p.y=0
-        pointsY.append(p)
-        p= lv.point_t()
-        p.x=ceil(Xpixel0)
-        p.y=216
-        pointsY.append(p)
-        
-        
-        p= lv.point_t()
-        p.y=ceil(Ypixel0)
-        p.x=0
-        pointsX.append(p)
-        p= lv.point_t()
-        p.y=ceil(Ypixel0)
-        p.x=318
-        pointsX.append(p)
-        
-        style_line = lv.style_t()
-        style_line.init()
-        style_line.set_line_width(2)
-        style_line.set_line_color(lv.palette_main(lv.PALETTE.BLUE))
-
-        ejeX = lv.line(lv.scr_act())
-        ejeX.set_points(pointsX,2)
-        ejeX.align(lv.ALIGN.TOP_LEFT, 0, 22)
-        ejeX.add_style(style_line, 0)
-        ejeY = lv.line(lv.scr_act())
-        ejeY.set_points(pointsY,2)
-        ejeY.add_style(style_line, 0)
-        ejeY.align(lv.ALIGN.TOP_LEFT, 0, 22)
         
         if rangoGraph["parametric"] == lv.STATE.CHECKED:
             FXT=rangoGraph['function_x_t']
             FYT=rangoGraph['function_y_t']
         else:
             F=rangoGraph['function']
-    #        print(F)
-        #definimos la funcion a graficar
-    #     EigenmathCMD='F(x)='+rangoGraph['function']
-    #     EigenmathResult = eigenmath.run(EigenmathCMD )
-    #     print(EigenmathResult )
-        numPoints=0
+
         for self.Tpixel in range (0,319):
             if rangoGraph["parametric"] == lv.STATE.CHECKED:
                 Tgraph=rangoGraph['Tmin']+(rangoGraph['Tmax']-rangoGraph['Tmin'])*self.Tpixel/320
@@ -205,12 +152,145 @@ class guiObj2(guiBase):
                 points.append(pointFuntion)
             else :
                 if len(points)>0 :
-                    line1 = lv.line(lv.scr_act())
-                    line1.set_points(points, len(points) )
-                    points.clear()
-                    line1.align(lv.ALIGN.TOP_LEFT, 0, 22)
-        #si hay algun punto ... hay que dibujarlo
-        if len(points)>0 :
+                    self.listPto.append(points)
+                    points = []
+            if len(points)>0 :
+                self.listPto.append(points)
+                
+    #hace unas sola llamada a eigenmath
+    def calcPoints2(self):
+        rangoGraph=gal.data
+        points =  [ ]
+        
+        if rangoGraph["parametric"] == lv.STATE.CHECKED:
+            FXT=rangoGraph['function_x_t']
+            FYT=rangoGraph['function_y_t']
+        else:
+            F=rangoGraph['function']
+        #for(a,1,319,x=-5+10*a/320,print(float(eval(x^2))))
+        if rangoGraph["parametric"] == lv.STATE.CHECKED:
+            Delta = (rangoGraph['Tmax']-rangoGraph['Tmin'])/320
+            EigenmathCMD_X = 'for(a,0,319,print(float(eval('+FXT+',t,'+str(rangoGraph['Tmin'])+'+'+str(Delta)+'*a))))'
+            EigenmathCMD_Y = 'for(a,0,319,print(float(eval('+FYT+',t,'+str(rangoGraph['Tmin'])+'+'+str(Delta)+'*a))))'
+            EigenmathResultXT = eigenmath.run(EigenmathCMD_X )
+            EigenmathResultYT = eigenmath.run(EigenmathCMD_Y )
+            XgraphList = eval('['+EigenmathResultXT+']')
+            YgraphList = eval('['+EigenmathResultYT+']')
+            for self.Tpixel in range (0,319):
+                Xgraph=XgraphList[self.Tpixel]
+                Xpixel=(Xgraph-rangoGraph['Xmax'])*320/(rangoGraph['Xmin']-rangoGraph['Xmax'])
+                Ygraph=YgraphList[self.Tpixel]
+                Ypixel=(Ygraph-rangoGraph['Ymax'])*218/(rangoGraph['Ymin']-rangoGraph['Ymax'])
+                if Ypixel >0 and Ypixel <=216 and Xpixel >0 and Xpixel <320 :
+                    pointFuntion = lv.point_t()
+                    pointFuntion.x=ceil(Xpixel)
+                    pointFuntion.y=ceil(Ypixel)
+                    points.append(pointFuntion)
+                else :
+                    if len(points)>0 :
+                        self.listPto.append(points)
+                        points = []
+            if len(points)>0 :
+                self.listPto.append(points)
+        else:
+            Delta=(rangoGraph['Xmax']-rangoGraph['Xmin'])/320
+            EigenmathCMD = 'for(a,0,319,print(float(eval('+F+',x,'+str(rangoGraph['Xmin'])+'+'+str(Delta)+'*a))))'
+            #print(EigenmathCMD)
+            EigenmathResultYT = eigenmath.run(EigenmathCMD )
+            #print(EigenmathResultXT)
+            YgraphList = eval('['+EigenmathResultYT+']')
+            #print(YgraphList)
+            for self.Tpixel in range (0,319):
+                Ygraph=YgraphList[self.Tpixel]
+                Ypixel=(Ygraph-rangoGraph['Ymax'])*218/(rangoGraph['Ymin']-rangoGraph['Ymax'])
+                Xpixel = self.Tpixel
+                if Ypixel >0 and Ypixel <=216 and Xpixel >0 and Xpixel <320 :
+                    pointFuntion = lv.point_t()
+                    pointFuntion.x=ceil(Xpixel)
+                    pointFuntion.y=ceil(Ypixel)
+                    points.append(pointFuntion)
+                else :
+                    if len(points)>0 :
+                        self.listPto.append(points)
+                        points = []
+            if len(points)>0 :
+                self.listPto.append(points)
+                
+                
+    def execScreen(self):    
+        rangoGraph=gal.data
+        pointsY =  []
+        pointsX =  []
+        
+        self.puntoLabel = None
+        self.puntoCruz = None
+        miTeclado = teclado.teclado()
+        miTeclado.graphCursor = self.gestTeclado
+        miTeclado.taWidget = None
+
+        
+        #Interfaz grafico
+        self.miCabecera = guiHeader.guiHeader()
+        self.miCabecera.strTitle="Galdeano graphics"
+        self.miCabecera.setHeader()
+       
+        Xpixel0 =  rangoGraph['Xmin']*320/(rangoGraph['Xmin']-rangoGraph['Xmax'])  
+        Ypixel0=-rangoGraph['Ymax']*218 / (rangoGraph['Ymin']-rangoGraph['Ymax'])
+        
+        
+        p= lv.point_t()
+        p.x=ceil(Xpixel0)
+        p.y=0
+        pointsY.append(p)
+        p= lv.point_t()
+        p.x=ceil(Xpixel0)
+        p.y=216
+        pointsY.append(p)
+        
+        
+        p= lv.point_t()
+        p.y=ceil(Ypixel0)
+        p.x=0
+        pointsX.append(p)
+        p= lv.point_t()
+        p.y=ceil(Ypixel0)
+        p.x=318
+        pointsX.append(p)
+        
+        style_line = lv.style_t()
+        style_line.init()
+        style_line.set_line_width(2)
+        style_line.set_line_color(lv.palette_main(lv.PALETTE.BLUE))
+
+        ejeX = lv.line(lv.scr_act())
+        ejeX.set_points(pointsX,2)
+        ejeX.align(lv.ALIGN.TOP_LEFT, 0, 22)
+        ejeX.add_style(style_line, 0)
+        ejeY = lv.line(lv.scr_act())
+        ejeY.set_points(pointsY,2)
+        ejeY.add_style(style_line, 0)
+        ejeY.align(lv.ALIGN.TOP_LEFT, 0, 22)
+        
+        
+        inic=time.time_ns()
+        #calculamos los puntos de la grafica
+        self.calcPoints2()
+        print( time.time_ns() - inic )
+        
+#         calcPoints2()
+#         920778000
+#         824597000
+#         823171000
+#         calcPoints()
+#         2274446000
+#         2174546000
+#         2191135000
+
+        
+        
+        #ahora pintamos todas las lineas que hay en las listas de puntos
+        for points in self.listPto:
+            #print( len(points) )
             line1 = lv.line(lv.scr_act())
             line1.set_points(points, len(points) )
             points.clear()
@@ -284,7 +364,7 @@ class guiObj2(guiBase):
     def execScreenConf(self):
         self.miCabecera.strTitle="Galdeano graphics"
         self.miCabecera.setHeader()
-        
+
         data = gal.data
     
         miTeclado = teclado.teclado()
