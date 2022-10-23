@@ -32,7 +32,7 @@ class guiObj3(guiBase):
             self.file_text = self.ta.get_text()
             
         if self.taDir != None:  # pasamos de la pantalla de configuracion a la de  edicion
-             #self.workingDir  =  self.taDir.get_text()
+            cont_col2 = None
             pass
         super().clearScreen()
         
@@ -41,8 +41,9 @@ class guiObj3(guiBase):
 
     def openFile(self,e):
         obj2  = e.get_target()
-        self.file_name = '/'+self.workingDir+'/'+str(obj2.get_child(0).get_text())
-        datafile = open(self.file_name)
+        self.file_name = str(obj2.get_child(0).get_text())
+        longFileName = '/'+self.workingDir+'/'+self.file_name
+        datafile = open(longFileName)
         self.ta.set_text(datafile.read())
         datafile.close()
         self.cont_col2.delete()
@@ -77,15 +78,13 @@ class guiObj3(guiBase):
 
 
     def guarda(self,e):
-        self.file_name
-        self.edit_file_name
         if(self.file_name!=""):
             if(self.ta.get_text()!=""):
-                fichero = open(self.file_name,"w")
-                fichero.write(self.ta.get_text())
-                fichero.close()
+                self.file_text=self.ta.get_text()
+                self.saveText()
             else:
-                os.remove(self.file_name)
+                longFileName = '/'+self.workingDir+'/'+self.file_name
+                os.remove(longFileName)
         else:
             print("con que nombre")
             if(self.edit_file_name):
@@ -96,19 +95,19 @@ class guiObj3(guiBase):
                 self.ta2.set_placeholder_text( "File Name")
                 miTeclado = teclado.teclado()
                 miTeclado.taWidget=self.ta2
-                self.ta2.add_event_cb(lambda e: gal.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
+                self.ta2.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
                 self.ta2.add_state(lv.STATE.FOCUSED)
                 self.edit_file_name=False
             else:
                 if(self.ta.get_text()!=""):
-                    self.file_name="/'+self.workingDir+'/"+self.ta2.get_text()+".txt"
+                    self.file_name=self.ta2.get_text()
+                    longFileName = '/'+self.workingDir+'/'+self.file_name
                     self.ta2.delete()
                     if(self.ta.get_text()!=""):
-                        fichero = open(self.file_name,"w")
-                        fichero.write(self.ta.get_text())
-                        fichero.close()
+                        self.file_text=self.ta.get_text()
+                        self.saveText()
                     else:
-                        os.remove(self.file_name)
+                        os.remove(longFileName)
     
     def event_msgBox(self,e):
         mbox = e.get_current_target()
@@ -209,8 +208,18 @@ class guiObj3(guiBase):
         dd.set_options("\n".join(self.mDir))
         index=self.mDir.index(self.workingDir)
         dd.set_selected(index)
-
-
+    
+    def saveAs(self,e,ta):
+        self.file_name=ta.get_text()
+        longFileName  = '/'+self.workingDir+'/'+self.file_name
+        self.saveText(longFileName)
+        
+    def saveText(self,longFileName):
+        print("Guardamos fichero: "+ longFileName)
+        fichero = open(longFileName,"w")
+        fichero.write(self.file_text)
+        fichero.close()
+                
     def event_handler_DD(self,e):
         code = e.get_code()
         obj = e.get_target()
@@ -261,9 +270,9 @@ class guiObj3(guiBase):
         btn1.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 2, 212)
         btn1.set_size(75,25)
         label_btn1 = lv.label(btn1)
-        label_btn1.set_text("Set Dir")
+        label_btn1.set_text("")
         label_btn1.align_to(btn1, lv.ALIGN.TOP_LEFT, -2, -4)
-        btn1.add_event_cb(self.setDir, lv.EVENT.CLICKED, None)
+        #btn1.add_event_cb(self.setDir, lv.EVENT.CLICKED, None)
         
         btn2 = lv.btn(lv.scr_act())
         btn2.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 81, 212)
@@ -271,13 +280,13 @@ class guiObj3(guiBase):
         label_btn2 = lv.label(btn2)
         label_btn2.align_to(btn2, lv.ALIGN.TOP_LEFT, -4, -4)
         label_btn2.set_text("Save as")
-        #btn2.add_event_cb(lambda e: self.dic(e,self.ta,btn2) , lv.EVENT.CLICKED, None)
+        btn2.add_event_cb(lambda e: self.saveAs(e,self.taFileName) , lv.EVENT.CLICKED, None)
         
         btn3 = lv.btn(lv.scr_act())
         btn3.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 161, 212)
         btn3.set_size(75,25)
         label_btn3 = lv.label(btn3)
-        label_btn3.align_to(btn3, lv.ALIGN.TOP_LEFT, -4, -4)
+        label_btn3.align_to(btn3, lv.ALIGN.TOP_LEFT, -5, -4)
         label_btn3.set_text( "New Dir" )
         btn3.add_event_cb(lambda e: self.newDir(e,self.taDir,dd), lv.EVENT.CLICKED, None)
         
