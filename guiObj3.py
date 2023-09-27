@@ -81,7 +81,7 @@ class guiObj3(guiBase):
         if(self.file_name!=""):
             if(self.ta.get_text()!=""):
                 self.file_text=self.ta.get_text()
-                self.saveText()
+                self.saveText(self.file_name)
             else:
                 longFileName = '/'+self.workingDir+'/'+self.file_name
                 os.remove(longFileName)
@@ -105,7 +105,7 @@ class guiObj3(guiBase):
                     self.ta2.delete()
                     if(self.ta.get_text()!=""):
                         self.file_text=self.ta.get_text()
-                        self.saveText()
+                        self.saveText(longFileName)
                     else:
                         os.remove(longFileName)
     
@@ -215,6 +215,7 @@ class guiObj3(guiBase):
         self.saveText(longFileName)
         
     def saveText(self,longFileName):
+        longFileName  = '/'+self.workingDir+'/'+self.file_name
         print("Guardamos fichero: "+ longFileName)
         fichero = open(longFileName,"w")
         fichero.write(self.file_text)
