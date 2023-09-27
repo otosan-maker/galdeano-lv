@@ -220,6 +220,7 @@ class guiObj3(guiBase):
         fichero = open(longFileName,"w")
         fichero.write(self.file_text)
         fichero.close()
+        self.file_name = longFileName
                 
     def event_handler_DD(self,e):
         code = e.get_code()
