@@ -14,9 +14,9 @@ import teclado
 pantalla_sel = None
 
 
-Gal_pantallas = [{"Name":"Calculadora","function":guiObj1.guiObj1}
+Gal_pantallas = [{"Name":"Calculator","function":guiObj1.guiObj1}
                  ,{"Name":"Editor","function":guiObj3.guiObj3 }
-                 ,{"Name":"Graficas","function":guiObj2.guiObj2}
+                 ,{"Name":"Graphics","function":guiObj2.guiObj2}
                  ,{"Name":"Demo","function":guiObj0.guiObj0}
                  ]
 

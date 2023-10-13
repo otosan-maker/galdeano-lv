@@ -58,19 +58,24 @@ class guiObj0(guiBase):
         try:
             with open('/img/otosan.png','rb') as f:
                 png_data = f.read()
+            img_otosan = lv.img_dsc_t({
+              'data_size': len(png_data),
+              'data': png_data 
+            })
+            img1 = lv.img(lv.scr_act())
+            img1.set_src(img_otosan)
+            img1.align(lv.ALIGN.TOP_LEFT, 0, 65)
+            img1.set_size(201, 140)
         except:
             print("Could not find otosan.png")
-            sys.exit()
+            labelGaldeano = lv.label(lv.scr_act())
+            labelGaldeano.set_text("GALDEANO")
+            labelGaldeano.align(lv.ALIGN.TOP_LEFT, 10, 65)
             
-        img_otosan = lv.img_dsc_t({
-          'data_size': len(png_data),
-          'data': png_data 
-        })
+            
+        
 
-        img1 = lv.img(lv.scr_act())
-        img1.set_src(img_otosan)
-        img1.align(lv.ALIGN.TOP_LEFT, 0, 65)
-        img1.set_size(201, 140)
+        
         
         labelVersion = lv.label(lv.scr_act())
         labelVersion.set_text("Firmware 1.0")
