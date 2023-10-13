@@ -123,7 +123,7 @@ class guiObj0(guiBase):
             
     
     def execScreenConf(self):
-        self.miCabecera.strTitle="CibusTabula"
+        self.miCabecera.strTitle="DEMO"
         self.miCabecera.setHeader()
         label = lv.label(lv.scr_act())
         label.set_text("configuration screen DEMO")
