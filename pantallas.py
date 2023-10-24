@@ -11,7 +11,6 @@ import teclado
 pantalla_sel = None
 
 
-
 def pantalla_sel_event_handler(evt):
     global pantalla_sel
     code = evt.get_code()
