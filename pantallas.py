@@ -38,7 +38,6 @@ def pantalla_sel_event_handler(evt):
 def select():
     global pantalla_sel
     if pantalla_sel!=None:
-        print("Hacemos select clean")
         pantalla_sel.delete()
         pantalla_sel=None
         return
@@ -48,13 +47,11 @@ def select():
     btnm_map =[]
     for pantalla in Gal_pantallas:
         btnm_map.append(pantalla['Name'])
-        print( pantalla['Name'] )
         i=i+1
         if i > iColumnas:
             btnm_map.append("\n")
             i=0
     if (len(Gal_pantallas)%2==1):   # screen number odd
-        print("3 screens")
         btnm_map.append("Void")
     else:                           # screen number even
         btnm_map[len(btnm_map)-1]=""
