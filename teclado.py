@@ -1,4 +1,5 @@
 from machine import Pin
+from myKeyboard import Caracteres
 import time
 #import pantallas
 
@@ -36,25 +37,7 @@ class teclado:
 
 
 
-    Caracteres = [
-        [["mode","left","x","7","4","1","0"],
-         ["up","cnt","down","8","5","2","."],
-         ["menu","rigth","y","9","6","3","="],
-         ["sin()","log()","sqrt()","+","-","*","/"],
-         ["cos()","^","last","'",",","(","del"],
-         ["tan()","^2","pi","e"," ",")","exe"]],
-        [["mode","left","x","j","n","r","v"],
-         ["up","cnt","down","k","o","s","."],
-         ["menu","rigth","y","l","p","t","="],
-         ["a","d","g","m","q","u","z"],
-         ["b","e","h","!",",","[","del"],
-         ["c","f","i","e"," ","]","exe"]],
-        [["mode","left","X","J","N","R","V"],
-         ["up","cnt","down","K","O","S",":"],
-         ["menu","rigth","Y","L","P","T","="],
-         ["A","D","G","M","Q","U","Z"],
-         ["B","E","H","\"",",","{","del"],
-         ["C","F","I","e","	","}","exe"]]]
+
 
     modeLabelTxt=["Num","alp","ALP"]
     
@@ -85,7 +68,7 @@ class teclado:
             file.on()
             for idCol,col in enumerate(self.Columns):
                 if col.value() == 1:
-                    strValue=self.Caracteres[self.idMode][idFil][idCol]
+                    strValue=Caracteres[self.idMode][idFil][idCol]
                     keyPressed=time.ticks_ms()
                     #print("tecla F:"+str(idFil)+" C:"+str(idCol))
             file.off()
