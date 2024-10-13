@@ -21,7 +21,7 @@ class guiObj3(guiBase):
     file_text   = ""
     ta          = None
     
-    workingDir  = "data"
+    workingDir  = "prog"
     taDir       = None
     edit_file_name = True
     mDir = []
