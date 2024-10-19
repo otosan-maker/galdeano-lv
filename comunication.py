@@ -6,7 +6,7 @@ from umqttsimple import MQTTClient
 import urequests
 import json
 
-sta_if = network.WLAN(network.STA_IF)
+
 client = None
 
 
@@ -36,16 +36,13 @@ def connectWifi():
     sta_if.connect(netw["network"], netw["password"])
     
 
+
 def disConnectWifi():
     global sta_if
     sta_if.disconnect()
     
 def onTimerWifi():
-    import guiHeader
-    
-    miCabecera = guiHeader.guiHeader()
-    tim1 = Timer(2)
-    tim1.init(period=8000, mode=Timer.PERIODIC, callback=lambda t:miCabecera.setWifi())
+    return
     
 def getSSIDList():
     sta_if = network.WLAN(network.STA_IF);
