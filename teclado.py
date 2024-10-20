@@ -52,9 +52,9 @@ class teclado:
     cntWidget   = None
     groupWidget = None
     outputWidget= None
-    execFunc    = None
+    execFunc    = None  #the function to execute by exec button
     ObjActive   = None
-    graphCursor = None  #gestiona los cursores en modo grafico
+    graphCursor = None  #how the grafics up/down buttons works
     selectMenuFunc = None
 
     keyTimeout=1000

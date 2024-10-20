@@ -1,0 +1,4 @@
+Returns the absolute value.
+
+abs(-2)
+    2
