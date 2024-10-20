@@ -8,7 +8,7 @@ class guiHeader:
     
     strTitle=""
     miTeclado = teclado.teclado()
-    sta_if = network.WLAN(network.STA_IF)
+    
     
     styleHeader = None
     
@@ -54,15 +54,7 @@ class guiHeader:
         
         self.wifiLabel=lv.label(self.objHeader)
         self.wifiLabel.align_to(self.objHeader, lv.ALIGN.TOP_LEFT, 270, 0)
-        self.setWifi()
+        self.wifiLabel.set_text("")
         
 
-    def setWifi(self):
-        if self.wifiLabel==None:
-            return
-        if self.sta_if.isconnected():
-            self.wifiLabel.set_text(lv.SYMBOL.WIFI)
-        else:
-            self.wifiLabel.set_text("")
-        return
     

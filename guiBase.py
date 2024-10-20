@@ -87,7 +87,7 @@ class guiBase():
         self.cont_col = lv.obj(lv.scr_act())
         self.cont_col.move_foreground()
         self.cont_col.set_size(150, 150)
-        self.cont_col.align_to(btn2, lv.ALIGN.OUT_BOTTOM_MID, 0, -170)
+        self.cont_col.align_to(btn2, lv.ALIGN.OUT_BOTTOM_MID, 0, -180)
         
         self.cont_col.set_grid_dsc_array(col_dsc, row_dsc)
         for index,item in enumerate(dicVal):
