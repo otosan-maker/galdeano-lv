@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream
 Returns the absolute value.
 
 abs(-2)
     2
+=======
+
+Returns the absolute value or vector length of x.
+>>>>>>> Stashed changes

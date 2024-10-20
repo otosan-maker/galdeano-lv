@@ -1,0 +1,7 @@
+float(x) converts x to a floating point value.
+sum(n,0,20,(-1/2)^n)
+699051
+-------
+1048576
+float(last)
+0.666667

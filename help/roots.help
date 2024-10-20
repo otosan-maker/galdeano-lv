@@ -1,0 +1,7 @@
+Returns the rational roots of a polynomial.
+Multiple roots are returned as a vector.
+p = (x + 1) (x - 2)
+roots(p,x)
+(−1 , 2)
+If no roots are found then nil is returned. A nil result is not printed so the following
+example uses infixform to print nil as a string.

@@ -1,0 +1,3 @@
+sum(i, j, k, f ) returns
+
+sumatory from i=j to i=k of f(i)
