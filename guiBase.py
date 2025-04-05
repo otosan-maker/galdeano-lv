@@ -1,6 +1,5 @@
 import lvgl as lv
 import json
-import teclado
 import network
 import guiHeader
 

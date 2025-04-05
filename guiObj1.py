@@ -1,10 +1,10 @@
 import lvgl as lv
 import json
-import teclado
 import guiHeader
 from guiBase import guiBase
 import eigenmath
 import galdeanolib as gal
+import teclado
 
 class guiObj1(guiBase):
     def __init__(self):

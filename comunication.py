@@ -6,46 +6,22 @@ from umqttsimple import MQTTClient
 import urequests
 import json
 
-sta_if = network.WLAN(network.STA_IF)
+
 client = None
 
 
 def startUpWifi():
-    try:
-        f=open('/data/wifi.txt','r')
-        netw = json.load(f)
-        f.close()
-        if netw["startupInit"]:
-            sta_if = network.WLAN(network.STA_IF); sta_if.active(True)
-            sta_if.connect(netw["network"], netw["password"])
-    except:
-      print("Wifi file setting error")
+    return
 
 def connectWifi():
-    global sta_if
-    
-    if sta_if.isconnected():
-        return
-    
-    print("Connect WIFI")
-    f=open('/data/wifi.txt','r')
-    netw = json.load(f)
-    f.close()
-    
-    sta_if = network.WLAN(network.STA_IF); sta_if.active(True)
-    sta_if.connect(netw["network"], netw["password"])
+    return
     
 
 def disConnectWifi():
-    global sta_if
-    sta_if.disconnect()
+    return
     
 def onTimerWifi():
-    import guiHeader
-    
-    miCabecera = guiHeader.guiHeader()
-    tim1 = Timer(2)
-    tim1.init(period=8000, mode=Timer.PERIODIC, callback=lambda t:miCabecera.setWifi())
+    return
     
 def getSSIDList():
     sta_if = network.WLAN(network.STA_IF);

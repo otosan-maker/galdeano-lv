@@ -1,6 +1,6 @@
 import lvgl as lv
 from  myAppMenu import Gal_pantallas
-import teclado
+
 
 #####################################
 #

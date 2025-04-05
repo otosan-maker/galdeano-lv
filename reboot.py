@@ -1,3 +1,0 @@
-import machine
-
-machine.reset()
