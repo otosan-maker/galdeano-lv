@@ -25,5 +25,5 @@ elif HOSTTYPE== 'GALDEANO CIVER with ESP32S3':
     from xpt2046 import xpt2046
     disp = ili9341(miso=13, mosi=11, clk=12, cs=10, dc=16, rst=14, power=0, backlight=0, backlight_on=0, power_on=0,
         spihost=1, spimode=0, mhz=40, factor=16, hybrid=True, width=320, height=240, start_x=0, start_y=0, rot=-4)
-    touch=xpt2046()
+    touch=xpt2046( cs=15)
     
