@@ -12,7 +12,7 @@ class guiBase():
         self.miCabecera = guiHeader.guiHeader()
     
     def clearScreen(self):
-        obj=lv.scr_act()
+        obj=lv.screen_active()
         obj.clean()
 
     def ta_event_cb(self,e,kb):
@@ -26,12 +26,12 @@ class guiBase():
     def execScreen(self):
         self.miCabecera.strTitle="GUI BASE"
         self.miCabecera.setHeader()
-        label = lv.label(lv.scr_act())
+        label = lv.label(lv.screen_active())
         label.set_text("execScreen BASE")
         label.center()
     
     def execScreenConf(self):
-        label = lv.label(lv.scr_act())
+        label = lv.label(lv.screen_active())
         label.set_text("execScreenConf")
         label.center()
     
@@ -58,7 +58,7 @@ class guiBase():
                     "sinh()", "cosh()", "tanh()", "\n",
                     "arcsinh()", "arccosh()", "arctanh()", ""]
 
-        self.btnm1 = lv.btnmatrix(lv.scr_act())
+        self.btnm1 = lv.buttonmatrix(lv.screen_active())
         self.btnm1.set_map(btnm_map)
         self.btnm1.align(lv.ALIGN.CENTER, 0, 0)
         self.btnm1.add_event_cb(lambda e: self.event_handler(e,ta), lv.EVENT.ALL, None)	
@@ -78,12 +78,12 @@ class guiBase():
             self.cont_col=None
             return
         
-        col_dsc = [90, lv.GRID_TEMPLATE.LAST]
+        col_dsc = [90, lv.GRID_TEMPLATE_LAST]
         row_dsc = [20]
         for i in range(len(dicVal)):
             row_dsc.append(20)
-        row_dsc.append(lv.GRID_TEMPLATE.LAST)
-        self.cont_col = lv.obj(lv.scr_act())
+        row_dsc.append(lv.GRID_TEMPLATE_LAST)
+        self.cont_col = lv.obj(lv.screen_active())
         self.cont_col.move_foreground()
         self.cont_col.set_size(150, 150)
         self.cont_col.align_to(btn2, lv.ALIGN.OUT_BOTTOM_MID, 0, -170)
@@ -91,7 +91,7 @@ class guiBase():
         self.cont_col.set_grid_dsc_array(col_dsc, row_dsc)
         for index,item in enumerate(dicVal):
             # Add items to the column
-            obj = lv.btn(self.cont_col)
+            obj = lv.button(self.cont_col)
             obj.set_grid_cell(lv.GRID_ALIGN.STRETCH, 0, 1,
                           lv.GRID_ALIGN.STRETCH, index, 1)
             obj.add_event_cb(lambda e: self.insertDicFun(e,ta), lv.EVENT.CLICKED, None)

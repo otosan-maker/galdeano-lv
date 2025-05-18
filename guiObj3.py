@@ -40,7 +40,7 @@ class guiObj3(guiBase):
         mta.add_text("\n")
 
     def openFile(self,e):
-        obj2  = e.get_target()
+        obj2  = e.get_target_obj()
         self.file_name = str(obj2.get_child(0).get_text())
         longFileName = '/'+self.workingDir+'/'+self.file_name
         datafile = open(longFileName)
@@ -56,19 +56,19 @@ class guiObj3(guiBase):
             return
         dicVal = os.listdir(self.workingDir)
         
-        col_dsc = [200, lv.GRID_TEMPLATE.LAST]
+        col_dsc = [200, lv.GRID_TEMPLATE_LAST]
         row_dsc = [20]
         for i in range(len(dicVal)):
             row_dsc.append(20)
-        row_dsc.append(lv.GRID_TEMPLATE.LAST)
+        row_dsc.append(lv.GRID_TEMPLATE_LAST)
         # Create a container with COLUMN flex direction
-        self.cont_col2 = lv.obj(lv.scr_act())
+        self.cont_col2 = lv.obj(lv.screen_active())
         self.cont_col2.move_foreground()
         self.cont_col2.set_size(250, 150)
         self.cont_col2.align(lv.ALIGN.TOP_LEFT, 0, 50)
         self.cont_col2.set_grid_dsc_array(col_dsc, row_dsc)
         for index,item in enumerate(dicVal):
-            obj = lv.btn(self.cont_col2)
+            obj = lv.button(self.cont_col2)
             obj.set_grid_cell(lv.GRID_ALIGN.STRETCH, 0, 1,lv.GRID_ALIGN.STRETCH, index, 1)
             obj.add_event_cb(self.openFile, lv.EVENT.CLICKED, None)
             label = lv.label(obj)
@@ -88,7 +88,7 @@ class guiObj3(guiBase):
         else:
             print("con que nombre")
             if(self.edit_file_name):
-                self.ta2=lv.textarea(lv.scr_act())
+                self.ta2=lv.textarea(lv.screen_active())
                 self.ta2.align(lv.ALIGN.TOP_LEFT, 3, 160)
                 self.ta2.set_one_line(True)
                 self.ta2.set_width(310)
@@ -117,7 +117,7 @@ class guiObj3(guiBase):
         btns = [""]
         
         if(self.file_name==""):
-            mbox1 = lv.msgbox(lv.scr_act(), "Exec File", "Primero tienes que guardar el fichero", btns, True)
+            mbox1 = lv.msgbox(lv.screen_active(), "Exec File", "Primero tienes que guardar el fichero", btns, True)
             mbox1.add_event_cb(self.event_msgBox, lv.EVENT.VALUE_CHANGED, None)
             mbox1.center()
         else:
@@ -127,7 +127,11 @@ class guiObj3(guiBase):
             for line in x:
                 fichero.write(eigenmath.run(line ))
             fichero.close()
-            mbox1 = lv.msgbox(lv.scr_act(), "Fichero", "guardado out.txt", btns, True)
+            #mbox1 = lv.msgbox(lv.screen_active(), "Fichero", "guardado out.txt", btns, True)
+            mbox1 = lv.msgbox(lv.screen_active())
+            mbox1.add_title("Ejecutado")
+            mbox1.add_text("Output save in file out.txt")
+            mbox1.add_close_button()
             mbox1.add_event_cb(self.event_msgBox, lv.EVENT.VALUE_CHANGED, None)
             mbox1.center()
             
@@ -139,11 +143,18 @@ class guiObj3(guiBase):
         self.miCabecera.strTitle="Editor"
         self.miCabecera.setHeader()
         
+        styleBck = lv.style_t()
+        styleBck.init()
+        styleBck.set_bg_color(lv.color_hex(0x9090CF))
+        lv.screen_active().add_style(styleBck, 0)
+        
         styleTAInput = lv.style_t()
         styleTAInput.init()
         styleTAInput.set_pad_top(0)
-        styleTAInput.set_text_font(lv.galdeano_14)
-        self.ta = lv.textarea(lv.scr_act())
+        styleTAInput.set_bg_color(lv.color_hex(0xC0C0FF))
+        styleTAInput.set_text_color(lv.color_hex(0x101000))
+        #styleTAInput.set_text_font(lv.galdeano_14)
+        self.ta = lv.textarea(lv.screen_active())
         self.ta.align(lv.ALIGN.TOP_LEFT, 0, 23)
         self.ta.set_size(319,185)
         self.ta.set_placeholder_text( "Text editor")
@@ -155,40 +166,40 @@ class guiObj3(guiBase):
         miTeclado.taWidget=self.ta
         miTeclado.execFunc = lambda e: self.enter(e,self.ta)
         
-        btn1 = lv.btn(lv.scr_act())
-        btn1.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 2, 212)
+        btn1 = lv.button(lv.screen_active())
+        btn1.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 2, 212)
         btn1.set_size(65,25)
         label_btn1 = lv.label(btn1)
         label_btn1.set_text("Open")
         label_btn1.align_to(btn1, lv.ALIGN.TOP_LEFT, 0, -4)
         btn1.add_event_cb(self.abre, lv.EVENT.CLICKED, None)
         
-        btn2 = lv.btn(lv.scr_act())
-        btn2.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 71, 212)
+        btn2 = lv.button(lv.screen_active())
+        btn2.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 71, 212)
         btn2.set_size(65,25)
         label_btn2 = lv.label(btn2)
         label_btn2.set_text("Save")
         label_btn2.align_to(btn2, lv.ALIGN.TOP_LEFT, 0, -4)
         btn2.add_event_cb(self.guarda, lv.EVENT.CLICKED, None)
 
-        btn3 = lv.btn(lv.scr_act())
-        btn3.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 138, 212)
+        btn3 = lv.button(lv.screen_active())
+        btn3.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 138, 212)
         btn3.set_size(65,25)
         label_btn3 = lv.label(btn3)
         label_btn3.set_text( "Com" )
         label_btn3.align_to(btn3, lv.ALIGN.TOP_LEFT, 0, -4)
         btn3.add_event_cb(self.com, lv.EVENT.CLICKED, None)
 
-        btn4 = lv.btn(lv.scr_act())
-        btn4.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 206, 212)
+        btn4 = lv.button(lv.screen_active())
+        btn4.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 206, 212)
         btn4.set_size(53,25)
         label_btn4 = lv.label(btn4)
         label_btn4.set_text("Fun")
         label_btn4.align_to(btn4, lv.ALIGN.TOP_LEFT, 0, -4)
         btn4.add_event_cb(lambda e: self.dic(e,self.ta,btn4), lv.EVENT.CLICKED, None)
 
-        btn5 = lv.btn(lv.scr_act())
-        btn5.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 261, 212)
+        btn5 = lv.button(lv.screen_active())
+        btn5.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 261, 212)
         btn5.set_size(55,25)
         label_btn5 = lv.label(btn5)
         label_btn5.set_text("CLS")
@@ -236,20 +247,20 @@ class guiObj3(guiBase):
         miTeclado.taWidget=self.taDir
         
         
-        label = lv.label(lv.scr_act())
+        label = lv.label(lv.screen_active())
         label.set_text("Working Dir: ")
         label.align(lv.ALIGN.TOP_LEFT, 2, 30)
-        dd = lv.dropdown(lv.scr_act())
+        dd = lv.dropdown(lv.screen_active())
         #dd.set_options("\n".join(["data"]))
         self.scanDir(dd)
         dd.align(lv.ALIGN.TOP_LEFT, 130, 23)
         dd.add_event_cb(self.event_handler_DD, lv.EVENT.ALL, None)
         
         
-        label = lv.label(lv.scr_act())
+        label = lv.label(lv.screen_active())
         label.set_text("File Name: ")
         label.align(lv.ALIGN.TOP_LEFT, 2, 70)
-        self.taFileName = lv.textarea(lv.scr_act())
+        self.taFileName = lv.textarea(lv.screen_active())
         self.taFileName.align(lv.ALIGN.TOP_LEFT, 110, 63)
         self.taFileName.set_width(200)
         self.taFileName.set_one_line(True)
@@ -258,42 +269,42 @@ class guiObj3(guiBase):
         
         
         
-        label = lv.label(lv.scr_act())
+        label = lv.label(lv.screen_active())
         label.set_text("Create Dir: ")
         label.align(lv.ALIGN.TOP_LEFT, 2, 110)
-        self.taDir = lv.textarea(lv.scr_act())
+        self.taDir = lv.textarea(lv.screen_active())
         self.taDir.align(lv.ALIGN.TOP_LEFT, 110, 103)
         self.taDir.set_width(200)
         self.taDir.set_one_line(True)
         self.taDir.set_text( "" )
         self.taDir.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
-        btn1 = lv.btn(lv.scr_act())
-        btn1.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 2, 212)
+        btn1 = lv.btn(lv.screen_active())
+        btn1.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 2, 212)
         btn1.set_size(75,25)
         label_btn1 = lv.label(btn1)
         label_btn1.set_text("")
         label_btn1.align_to(btn1, lv.ALIGN.TOP_LEFT, -2, -4)
         #btn1.add_event_cb(self.setDir, lv.EVENT.CLICKED, None)
         
-        btn2 = lv.btn(lv.scr_act())
-        btn2.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 81, 212)
+        btn2 = lv.btn(lv.screen_active())
+        btn2.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 81, 212)
         btn2.set_size(75,25)
         label_btn2 = lv.label(btn2)
         label_btn2.align_to(btn2, lv.ALIGN.TOP_LEFT, -4, -4)
         label_btn2.set_text("Save as")
         btn2.add_event_cb(lambda e: self.saveAs(e,self.taFileName) , lv.EVENT.CLICKED, None)
         
-        btn3 = lv.btn(lv.scr_act())
-        btn3.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 161, 212)
+        btn3 = lv.btn(lv.screen_active())
+        btn3.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 161, 212)
         btn3.set_size(75,25)
         label_btn3 = lv.label(btn3)
         label_btn3.align_to(btn3, lv.ALIGN.TOP_LEFT, -5, -4)
         label_btn3.set_text( "New Dir" )
         btn3.add_event_cb(lambda e: self.newDir(e,self.taDir,dd), lv.EVENT.CLICKED, None)
         
-        btn4 = lv.btn(lv.scr_act())
-        btn4.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 240, 212)
+        btn4 = lv.btn(lv.screen_active())
+        btn4.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 240, 212)
         btn4.set_size(75,25)
         label_btn4 = lv.label(btn4)
         label_btn4.align_to(btn4, lv.ALIGN.TOP_LEFT, 0, -4)

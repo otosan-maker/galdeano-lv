@@ -1,4 +1,5 @@
 import lvgl as lv
+import teclado
 from  myAppMenu import Gal_pantallas
 
 
@@ -10,15 +11,14 @@ from  myAppMenu import Gal_pantallas
 
 pantalla_sel = None
 
-
 def pantalla_sel_event_handler(evt):
     global pantalla_sel
     code = evt.get_code()
-    obj  = evt.get_target()
+    obj  = evt.get_target_obj()
 
     if code == lv.EVENT.VALUE_CHANGED :
-        id = obj.get_selected_btn()
-        txt = obj.get_btn_text(id)
+        id = obj.get_selected_button()
+        txt = obj.get_button_text(id)
         if(txt == "Void"):
             return
         pantalla_sel.delete()
@@ -54,10 +54,15 @@ def select():
         btnm_map.append("Void")
     else:                           # screen number even
         btnm_map[len(btnm_map)-1]=""
+    styleMenu = lv.style_t()
+    styleMenu.init()
+    styleMenu.set_bg_color(lv.color_hex(0xC0C0CF))
     
-    pantalla_sel = lv.btnmatrix(lv.scr_act())
+    pantalla_sel = lv.buttonmatrix(lv.screen_active())
     pantalla_sel.set_size(300, 200)
     pantalla_sel.set_map(btnm_map)
+    pantalla_sel.add_style(styleMenu, 0)
+    print(btnm_map)
     pantalla_sel.align(lv.ALIGN.CENTER, 0, 0)
     pantalla_sel.add_event_cb(pantalla_sel_event_handler, lv.EVENT.ALL, None)
 

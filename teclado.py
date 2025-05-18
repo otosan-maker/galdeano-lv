@@ -12,13 +12,13 @@ class teclado:
         if not hasattr(cls, 'instance'):
             import uos
             HOSTTYPE = uos.uname()[4]
-            if HOSTTYPE== 'GALDEANO M5 DEV with ESP32':
+            if HOSTTYPE.find('GALDEANO M5')>=0:
                 import tecladoM5
                 cls.instance = tecladoM5.teclado()
-            elif HOSTTYPE== 'GALDEANO CLASSIC DEV with ESP32':
+            elif HOSTTYPE.find('GALDEANO CLASSIC')>=0:
                 import tecladoCLASSIC
                 cls.instance =tecladoCLASSIC.teclado()
-            elif HOSTTYPE== 'GALDEANO CIVER with ESP32S3':
+            elif HOSTTYPE.find('GALDEANO CIVER')>=0:
                 import tecladoCIVER
                 cls.instance =tecladoCIVER.teclado()
             super(teclado, cls).__new__(cls)

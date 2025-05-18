@@ -137,7 +137,7 @@ class teclado:
                 elif(c=="down"):
                     self.taWidget.cursor_down()
                 elif(c=="del"):
-                    self.taWidget.del_char()
+                    self.taWidget.delete_char()
                 else:
                     self.taWidget.add_text(c) 
     

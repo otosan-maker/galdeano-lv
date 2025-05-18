@@ -48,9 +48,9 @@ class guiObj2(guiBase):
                 self.Tpixel=320
         if self.puntoLabel == None:
             #self.puntoLabel.delete()
-            self.puntoLabel = lv.label(lv.scr_act())
+            self.puntoLabel = lv.label(lv.screen_active())
             self.puntoLabel.set_recolor(True)
-            self.puntoCruz = lv.line(lv.scr_act())
+            self.puntoCruz = lv.line(lv.screen_active())
             self.puntoCruz.set_points(line_points, 5)
         rangoGraph=gal.data
         if rangoGraph["parametric"] == lv.STATE.CHECKED:
@@ -146,7 +146,7 @@ class guiObj2(guiBase):
                     Ypixel=0
             
             if Ypixel >0 and Ypixel <=216 and Xpixel >0 and Xpixel <320 :
-                pointFuntion = lv.point_t()
+                pointFuntion = lv.point_precise_t()
                 pointFuntion.x=ceil(Xpixel)
                 pointFuntion.y=ceil(Ypixel)
                 points.append(pointFuntion)
@@ -182,7 +182,7 @@ class guiObj2(guiBase):
                 Ygraph=YgraphList[self.Tpixel]
                 Ypixel=(Ygraph-rangoGraph['Ymax'])*218/(rangoGraph['Ymin']-rangoGraph['Ymax'])
                 if Ypixel >0 and Ypixel <=216 and Xpixel >0 and Xpixel <320 :
-                    pointFuntion = lv.point_t()
+                    pointFuntion = lv.point_precise_t()
                     pointFuntion.x=ceil(Xpixel)
                     pointFuntion.y=ceil(Ypixel)
                     points.append(pointFuntion)
@@ -205,7 +205,7 @@ class guiObj2(guiBase):
                 Ypixel=(Ygraph-rangoGraph['Ymax'])*218/(rangoGraph['Ymin']-rangoGraph['Ymax'])
                 Xpixel = self.Tpixel
                 if Ypixel >0 and Ypixel <=216 and Xpixel >0 and Xpixel <320 :
-                    pointFuntion = lv.point_t()
+                    pointFuntion = lv.point_precise_t()
                     pointFuntion.x=ceil(Xpixel)
                     pointFuntion.y=ceil(Ypixel)
                     points.append(pointFuntion)
@@ -237,22 +237,26 @@ class guiObj2(guiBase):
         Xpixel0 =  rangoGraph['Xmin']*320/(rangoGraph['Xmin']-rangoGraph['Xmax'])  
         Ypixel0=-rangoGraph['Ymax']*218 / (rangoGraph['Ymin']-rangoGraph['Ymax'])
         
+        styleBck = lv.style_t()
+        styleBck.init()
+        styleBck.set_bg_color(lv.color_hex(0xC0C0CF))
+        lv.screen_active().add_style(styleBck, 0)
         
-        p= lv.point_t()
+        p= lv.point_precise_t()
         p.x=ceil(Xpixel0)
         p.y=0
         pointsY.append(p)
-        p= lv.point_t()
+        p= lv.point_precise_t()
         p.x=ceil(Xpixel0)
         p.y=216
         pointsY.append(p)
         
         
-        p= lv.point_t()
+        p= lv.point_precise_t()
         p.y=ceil(Ypixel0)
         p.x=0
         pointsX.append(p)
-        p= lv.point_t()
+        p= lv.point_precise_t()
         p.y=ceil(Ypixel0)
         p.x=318
         pointsX.append(p)
@@ -262,11 +266,11 @@ class guiObj2(guiBase):
         style_line.set_line_width(2)
         style_line.set_line_color(lv.palette_main(lv.PALETTE.BLUE))
 
-        ejeX = lv.line(lv.scr_act())
+        ejeX = lv.line(lv.screen_active())
         ejeX.set_points(pointsX,2)
         ejeX.align(lv.ALIGN.TOP_LEFT, 0, 22)
         ejeX.add_style(style_line, 0)
-        ejeY = lv.line(lv.scr_act())
+        ejeY = lv.line(lv.screen_active())
         ejeY.set_points(pointsY,2)
         ejeY.add_style(style_line, 0)
         ejeY.align(lv.ALIGN.TOP_LEFT, 0, 22)
@@ -288,26 +292,39 @@ class guiObj2(guiBase):
 
         
         
+        styleTxtEje = lv.style_t()
+        styleTxtEje.init()
+        styleTxtEje.set_text_color(lv.color_hex(0x10106F))
+        styleTxtEje.set_line_color(lv.color_hex(0x10103F))
+        
         #ahora pintamos todas las lineas que hay en las listas de puntos
         for points in self.listPto:
             #print( len(points) )
-            line1 = lv.line(lv.scr_act())
+            line1 = lv.line(lv.screen_active())
+            line1.add_style(styleTxtEje, 0)
             line1.set_points(points, len(points) )
             points.clear()
             line1.align(lv.ALIGN.TOP_LEFT, 0, 22)
         
-        ejeLabel = lv.label(lv.scr_act())
+
+        
+        
+        ejeLabel = lv.label(lv.screen_active())
         ejeLabel.set_text(str(rangoGraph['Xmin']))
-        ejeLabel.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 0, ceil(Ypixel0)+22)
-        ejeLabel = lv.label(lv.scr_act())
+        ejeLabel.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 0, ceil(Ypixel0)+22)
+        ejeLabel.add_style(styleTxtEje, 0)
+        ejeLabel = lv.label(lv.screen_active())
         ejeLabel.set_text(str(rangoGraph['Xmax']))
-        ejeLabel.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 300, ceil(Ypixel0)+22)
-        ejeLabel = lv.label(lv.scr_act())
+        ejeLabel.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 300, ceil(Ypixel0)+22)
+        ejeLabel.add_style(styleTxtEje, 0)
+        ejeLabel = lv.label(lv.screen_active())
         ejeLabel.set_text(str(rangoGraph['Ymax']))
-        ejeLabel.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, ceil(Xpixel0) , 22)
-        ejeLabel = lv.label(lv.scr_act())
+        ejeLabel.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, ceil(Xpixel0) , 22)
+        ejeLabel.add_style(styleTxtEje, 0)
+        ejeLabel = lv.label(lv.screen_active())
         ejeLabel.set_text(str(rangoGraph['Ymin']))
-        ejeLabel.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, ceil(Xpixel0), 216)
+        ejeLabel.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, ceil(Xpixel0), 216)
+        ejeLabel.add_style(styleTxtEje, 0)
 
 #####################################
 #
@@ -348,16 +365,16 @@ class guiObj2(guiBase):
 
     def cb_event_handler(self,e,ta,taXT,taYT):
         code = e.get_code()
-        obj = e.get_target()
+        obj  = e.get_target_obj()
         if code == lv.EVENT.VALUE_CHANGED:
             if obj.get_state() & lv.STATE.CHECKED:
                 ta.add_flag(ta.FLAG.HIDDEN)
-                taXT.clear_flag(taXT.FLAG.HIDDEN)
-                taYT.clear_flag(taYT.FLAG.HIDDEN)
+                taXT.remove_flag(taXT.FLAG.HIDDEN)
+                taYT.remove_flag(taYT.FLAG.HIDDEN)
             else:
                 taXT.add_flag(taXT.FLAG.HIDDEN)
                 taYT.add_flag(taYT.FLAG.HIDDEN)
-                ta.clear_flag(ta.FLAG.HIDDEN)
+                ta.remove_flag(ta.FLAG.HIDDEN)
 
 
     
@@ -373,10 +390,11 @@ class guiObj2(guiBase):
         styleTAInput = lv.style_t()
         styleTAInput.init()
         styleTAInput.set_pad_top(0)
-        
+        styleTAInput.set_bg_color(lv.color_hex(0xA0A0A0))
+        styleTAInput.set_text_color(lv.color_hex(0x104010))
         #definimos el interfaz para parametricas
         
-        taXT = lv.textarea(lv.scr_act())
+        taXT = lv.textarea(lv.screen_active())
         taXT.align(lv.ALIGN.TOP_LEFT, 10, 23)
         taXT.set_one_line(True)
         taXT.set_width(145)
@@ -384,7 +402,7 @@ class guiObj2(guiBase):
         taXT.add_style(styleTAInput, 0)
         taXT.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         taXT.set_text( str(data["function_x_t"]) )
-        taYT = lv.textarea(lv.scr_act())
+        taYT = lv.textarea(lv.screen_active())
         taYT.align(lv.ALIGN.TOP_LEFT, 160, 23)
         taYT.set_one_line(True)
         taYT.set_width(145)
@@ -395,7 +413,7 @@ class guiObj2(guiBase):
 
         #definimos el interfaz para funciones normales
         
-        ta = lv.textarea(lv.scr_act())
+        ta = lv.textarea(lv.screen_active())
         ta.align(lv.ALIGN.TOP_LEFT, 10, 23)
         ta.set_one_line(True)
         ta.set_width(290)
@@ -410,11 +428,16 @@ class guiObj2(guiBase):
             taXT.add_flag(taXT.FLAG.HIDDEN)
             taYT.add_flag(taYT.FLAG.HIDDEN)
         
-        XLabel=lv.label(lv.scr_act())
-        XLabel.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 10, 70)
-        XLabel.set_text("X Axis:")
+        styleLabelInp = lv.style_t()
+        styleLabelInp.init()
+        styleLabelInp.set_text_color(lv.color_hex(0x104010))
         
-        ta2 = lv.textarea(lv.scr_act())
+        XLabel=lv.label(lv.screen_active())
+        XLabel.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 10, 70)
+        XLabel.set_text("X Axis:")
+        XLabel.add_style(styleLabelInp, 0)
+        
+        ta2 = lv.textarea(lv.screen_active())
         ta2.align(lv.ALIGN.TOP_LEFT, 90, 66)
         ta2.set_one_line(True)
         ta2.set_width(100)
@@ -423,7 +446,7 @@ class guiObj2(guiBase):
         ta2.add_style(styleTAInput, 0)
         ta2.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
-        ta3 = lv.textarea(lv.scr_act())
+        ta3 = lv.textarea(lv.screen_active())
         ta3.align(lv.ALIGN.TOP_LEFT, 190, 66)
         ta3.set_one_line(True)
         ta3.set_width(100)
@@ -432,11 +455,12 @@ class guiObj2(guiBase):
         ta3.add_style(styleTAInput, 0)
         ta3.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
-        YLabel=lv.label(lv.scr_act())
-        YLabel.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 10, 110)
+        YLabel=lv.label(lv.screen_active())
+        YLabel.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 10, 110)
         YLabel.set_text("Y Axis:")
+        YLabel.add_style(styleLabelInp, 0)
         
-        ta4 = lv.textarea(lv.scr_act())
+        ta4 = lv.textarea(lv.screen_active())
         ta4.align(lv.ALIGN.TOP_LEFT, 90, 106)
         ta4.set_one_line(True)
         ta4.set_width(100)
@@ -445,7 +469,7 @@ class guiObj2(guiBase):
         ta4.add_style(styleTAInput, 0)
         ta4.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
-        ta5 = lv.textarea(lv.scr_act())
+        ta5 = lv.textarea(lv.screen_active())
         ta5.align(lv.ALIGN.TOP_LEFT, 190, 106)
         ta5.set_one_line(True)
         ta5.set_width(100)
@@ -454,7 +478,7 @@ class guiObj2(guiBase):
         ta5.add_style(styleTAInput, 0)
         ta5.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
-        ta6 = lv.textarea(lv.scr_act())
+        ta6 = lv.textarea(lv.screen_active())
         ta6.align(lv.ALIGN.TOP_LEFT, 90, 146)
         ta6.set_one_line(True)
         ta6.set_width(100)
@@ -463,7 +487,7 @@ class guiObj2(guiBase):
         ta6.add_style(styleTAInput, 0)
         ta6.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
-        ta7 = lv.textarea(lv.scr_act())
+        ta7 = lv.textarea(lv.screen_active())
         ta7.align(lv.ALIGN.TOP_LEFT, 190, 146)
         ta7.set_one_line(True)
         ta7.set_width(100)
@@ -472,38 +496,39 @@ class guiObj2(guiBase):
         ta7.add_style(styleTAInput, 0)
         ta7.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
-        ta8 = lv.checkbox(lv.scr_act())
+        ta8 = lv.checkbox(lv.screen_active())
         ta8.set_text("Par")
         ta8.add_event_cb(lambda e: self.cb_event_handler(e,ta,taXT,taYT), lv.EVENT.ALL, None)
         ta8.add_state(data["parametric"])
         ta8.align(lv.ALIGN.TOP_LEFT, 10, 146)
+        ta8.add_style(styleLabelInp, 0)
         
-        btn1 = lv.btn(lv.scr_act())
-        btn1.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 1, 212)
+        btn1 = lv.button(lv.screen_active())
+        btn1.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 1, 212)
         btn1.set_size(75,25)
         label_btn1 = lv.label(btn1)
         label_btn1.align_to(btn1, lv.ALIGN.TOP_LEFT, 0, -4)
         label_btn1.set_text("Graph")
         btn1.add_event_cb(lambda e: self.setGraph(e,ta,ta2,ta3,ta4,ta5,ta6,ta7,ta8,taXT,taYT), lv.EVENT.CLICKED, None)
         
-        btn2 = lv.btn(lv.scr_act())
-        btn2.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 81, 212)
+        btn2 = lv.button(lv.screen_active())
+        btn2.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 81, 212)
         btn2.set_size(75,25)
         label_btn2 = lv.label(btn2)
         label_btn2.align_to(btn2, lv.ALIGN.TOP_LEFT, 0, -4)
         label_btn2.set_text("Funct")
         btn2.add_event_cb(lambda e: self.dic(e,ta,btn2) , lv.EVENT.CLICKED, None)
         
-        btn3 = lv.btn(lv.scr_act())
-        btn3.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 161, 212)
+        btn3 = lv.button(lv.screen_active())
+        btn3.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 161, 212)
         btn3.set_size(75,25)
         label_btn3 = lv.label(btn3)
         label_btn3.align_to(btn3, lv.ALIGN.TOP_LEFT, 0, -4)
         label_btn3.set_text( "Trigon" )
         btn3.add_event_cb(lambda e: self.trig2(e,ta), lv.EVENT.CLICKED, None)
         
-        btn4 = lv.btn(lv.scr_act())
-        btn4.align_to(lv.scr_act(), lv.ALIGN.TOP_LEFT, 240, 212)
+        btn4 = lv.button(lv.screen_active())
+        btn4.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 240, 212)
         btn4.set_size(75,25)
         label_btn4 = lv.label(btn4)
         label_btn4.align_to(btn4, lv.ALIGN.TOP_LEFT, 0, -4)
