@@ -26,6 +26,14 @@ class guiObj0(guiBase):
         self.mbox1.add_event_cb(self.eMsgBox, lv.EVENT.VALUE_CHANGED, None)
         self.mbox1.center()
 
+    def get_image_data(self,filename):
+        with open(filename, 'rb') as f:
+            imgdata = f.read()
+        return imgdata
+        
+    def create_img_dsc(self,imgdata):
+        imgdsc = lv.image_dsc_t({'data_size':len(imgdata), 'data':imgdata})
+        return imgdsc
 
     #DEMO screen code
     def execScreen(self):
@@ -47,27 +55,33 @@ class guiObj0(guiBase):
         
         style = lv.style_t()
         style.init()
-        #style.set_text_font(lv.galdeano_14)
-        
-        
-        # Register PNG image decoder
-        #decoder = lv.img.decoder_create()
+        style.set_text_font(lv.galdeano_14)
 
-        
-        print("Could not find otosan.png")
-        labelGaldeano = lv.label(lv.screen_active())
-        labelGaldeano.set_text("GALDEANO")
-        labelGaldeano.align(lv.ALIGN.TOP_LEFT, 10, 65)
-
+        try:
+            some_image_data = self.get_image_data("/img/otosan.png")
+            some_image_data_mv = memoryview(some_image_data)
+            some_img_dsc = self.create_img_dsc(some_image_data_mv)
+            img1 = lv.image(lv.screen_active())
+            img1.set_src(some_img_dsc)
+            img1.align(lv.ALIGN.TOP_LEFT, 0, 65)
+            img1.set_size(201, 140)
+        except:
+            print("Could not find the file")
+            labelGaldeano = lv.label(lv.screen_active())
+            labelGaldeano.set_text("GALDEANO")
+            labelGaldeano.align(lv.ALIGN.TOP_LEFT, 10, 65)
         
         labelVersion = lv.label(lv.screen_active())
         labelVersion.set_text("Firmware 2.0")
         labelVersion.align(lv.ALIGN.TOP_LEFT, 205, 65)
         
         labelVersion2 = lv.label(lv.screen_active())
-        labelVersion2.set_text("uPython 24")
-        labelVersion2.align(lv.ALIGN.TOP_LEFT, 205, 85)
+        labelVersion2.set_text("uPython 1.24")
         
+        labelVersion2.align(lv.ALIGN.TOP_LEFT, 205, 85)
+        labelVersion3 = lv.label(lv.screen_active())
+        labelVersion3.set_text("LVGL 9.2")
+        labelVersion3.align(lv.ALIGN.TOP_LEFT, 205, 105)
         # we will exec this function when we press exe button
         miTeclado.execFunc = lambda e: self.exeButton(e,"exec button pressed")
         
