@@ -1,8 +1,11 @@
 import lvgl as lv
 import json
-import network
+import sys
 
-f=open('/data/graf.txt','r')
+if sys.platform == 'linux':
+    f=open('/home/angel/Documentos/GitHub/galdeano-lv/data/graf.txt','r')
+else:
+    f=open('/data/graf.txt','r')
 data = json.load(f)
 f.close()
 

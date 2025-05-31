@@ -1,6 +1,5 @@
 import lvgl as lv
 import json
-import network
 import guiHeader
 
 class guiBase():

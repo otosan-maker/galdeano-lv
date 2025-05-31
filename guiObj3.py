@@ -126,6 +126,7 @@ class guiObj3(guiBase):
             x=self.ta.get_text().split('\n')
             for line in x:
                 fichero.write(eigenmath.run(line ))
+                print(line)
             fichero.close()
             #mbox1 = lv.msgbox(lv.screen_active(), "Fichero", "guardado out.txt", btns, True)
             mbox1 = lv.msgbox(lv.screen_active())
@@ -153,7 +154,7 @@ class guiObj3(guiBase):
         styleTAInput.set_pad_top(0)
         styleTAInput.set_bg_color(lv.color_hex(0xC0C0FF))
         styleTAInput.set_text_color(lv.color_hex(0x101000))
-        #styleTAInput.set_text_font(lv.galdeano_14)
+        styleTAInput.set_text_font(lv.galdeano_14)
         self.ta = lv.textarea(lv.screen_active())
         self.ta.align(lv.ALIGN.TOP_LEFT, 0, 23)
         self.ta.set_size(319,185)
