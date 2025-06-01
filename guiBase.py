@@ -37,8 +37,6 @@ class guiBase():
     def event_handler(self,evt,ta):
         code = evt.get_code()
         obj  = evt.get_current_target_obj()
-        print(evt)
-        print(obj)
         if code == lv.EVENT.VALUE_CHANGED :
             id = obj.get_selected_button ()
             txt = obj.get_button_text(id)
