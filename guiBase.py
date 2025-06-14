@@ -36,11 +36,10 @@ class guiBase():
     
     def event_handler(self,evt,ta):
         code = evt.get_code()
-        obj  = evt.get_target()
-
+        obj  = evt.get_current_target_obj()
         if code == lv.EVENT.VALUE_CHANGED :
-            id = obj.get_selected_btn()
-            txt = obj.get_btn_text(id)
+            id = obj.get_selected_button ()
+            txt = obj.get_button_text(id)
             ta.add_text(txt)
             ta.cursor_left()
             self.btnm1.delete()
@@ -64,7 +63,7 @@ class guiBase():
 
     
     def insertDicFun(self,e,ta):
-        obj2  = e.get_target()
+        obj2  = e.get_current_target_obj()
         ta.add_text(obj2.get_child(0).get_text())
         ta.cursor_left()
         self.cont_col.delete()
