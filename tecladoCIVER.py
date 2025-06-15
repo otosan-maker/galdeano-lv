@@ -3,11 +3,8 @@ from myKeyboardCIVER import Caracteres
 import time
 #import pantallas
 
-shift_key	=(0,3)
-alt_key		=(5,0)
 
 class teclado:
-    strLastKey="Inicio"
     def __init__(self):
         self.ta = None
     
@@ -40,15 +37,12 @@ class teclado:
     C6 = Pin(18, Pin.IN, Pin.PULL_DOWN)
     C7 = Pin(42, Pin.IN, Pin.PULL_DOWN)
 
-
-
-
-
     modeLabelTxt=["Math","alp","ALP"]
     
     Columns = [ C1, C2, C3, C4, C5, C6 , C7]
     Files = [ F1, F2, F3, F4, F5, F6, F7]
-
+    shift_key  =(0,3)
+    alt_key    =(5,0)
     idMode=1
     idCntl=False
     
@@ -61,8 +55,11 @@ class teclado:
     ObjActive   = None
     graphCursor = None  #gestiona los cursores en modo grafico
     selectMenuFunc = None
-
-    keyTimeout=1000	
+    strLastKey  =  ['a']
+    lastKeyPressed = 0
+    keyPressed = 0
+    keyTimeout=500
+    
     # obtenemos las coordenadas de los botones pulsados
     def get_switch(self):
         interruptores = [""]
@@ -71,51 +68,56 @@ class teclado:
             for idCol,col in enumerate(self.Columns):
                 if col.value() == 1:
                     interruptores.append((idFil,idCol))
-                    keyPressed=time.ticks_ms()
+                    self.keyPressed=time.ticks_ms()
                     #print("tecla F:"+str(idFil)+" C:"+str(idCol))
             file.off()
         return interruptores
     
+    
+    #una funciona auxiliar que saca el caracter de la lista de botones pulsados y
+    # lo transforma en un caracter.
+    def get_char(self,listKeyCoord):
+        if (self.shift_key in listKeyCoord):
+            listKeyCoord.remove(self.shift_key)
+            b=listKeyCoord.pop()
+            if b == "":
+                return ""
+            else:
+                return Caracteres[2][b[0]][b[1]]
+        elif (self.alt_key in listKeyCoord):
+            listKeyCoord.remove(self.alt_key)
+            b=listKeyCoord.pop()
+            if b == "":
+                return ""
+            else:
+                return Caracteres[3][b[0]][b[1]]
+        b=listKeyCoord.pop()
+        if b == "":
+            return ""
+        else:
+            return Caracteres[self.idMode][b[0]][b[1]]
+        
     #obtener las tecla a partir de los botones
     #algunos botones pueden modificarlo, lo hacemos aqui.
     def get_key(self):
         strValue=[""]
-        keyPressed=0
         strValue = self.get_switch()
         if (strValue == self.strLastKey):
-            #print("self.lastKeyPressed-keyPressed: "+str( self.lastKeyPressed-keyPressed )+" keyTimeout: "+str( self.keyTimeout ))
-            if  (keyPressed-self.lastKeyPressed<self.keyTimeout):
+            #print("lastKeyPressed: "+str( self.lastKeyPressed )+" keyPressed: "+str( self.keyPressed ))
+            if  (self.keyPressed-self.lastKeyPressed<self.keyTimeout):
                 return ""
             else:
-                #print("key: "+strValue+" keyTimeout: "+str( self.keyTimeout ))
-                self.keyTimeout=200
-                #Caracteres[self.idMode][idFil][idCol]
-                return "1" #strValue.pop()
+                #print("2 lastKeyPressed: "+str( self.lastKeyPressed )+" keyPressed: "+str( self.keyPressed ))
+                self.lastKeyPressed=self.keyPressed
+                return self.get_char(strValue)
         else:
-            #print("return key:"+strValue)
-            self.keyTimeout=1000
-            self.strLastKey=strValue
-            self.lastKeyPressed=keyPressed
-            if (shift_key in strValue):
-                strValue.remove(shift_key)
-                b=strValue.pop()
-                if b == "":
-                    return ""
-                else:
-                    return Caracteres[2][b[0]][b[1]]
-            elif (alt_key in strValue):
-                strValue.remove(alt_key)
-                b=strValue.pop()
-                if b == "":
-                    return ""
-                else:
-                    return Caracteres[3][b[0]][b[1]]
-            b=strValue.pop()
-            #print(b)
-            if b == "":
-                return ""
-            else:
-                return Caracteres[self.idMode][b[0]][b[1]]
+            self.strLastKey=strValue.copy()
+            #print("2:")
+            #print(strValue)
+            #print(self.strLastKey)
+            self.lastKeyPressed=self.keyPressed
+            return self.get_char(strValue)
+
         
         
     #bucle para actualizar el textArea, hay que definir un timer

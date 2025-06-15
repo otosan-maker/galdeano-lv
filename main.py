@@ -33,7 +33,7 @@ else:
     import machine
     miTeclado = teclado.teclado()
     tim0 = machine.Timer(1)
-    tim0.init(period=200, mode=machine.Timer.PERIODIC, callback=lambda t:miTeclado.key_loop())
+    tim0.init(period=100, mode=machine.Timer.PERIODIC, callback=lambda t:miTeclado.key_loop())
 
 #comun arranque
 import guiObj1
