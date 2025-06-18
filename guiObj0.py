@@ -22,7 +22,10 @@ class guiObj0(guiBase):
         mbox = e.get_current_target()
         self.mbox1.close()
     def exeButton(self,event,msgTxt):
-        self.mbox1 = lv.msgbox(lv.screen_active(), "MSG", msgTxt , self.btns, True)
+        self.mbox1 = lv.msgbox(lv.screen_active())#, "MSG", msgTxt , self.btns, True)
+        self.mbox1.add_title("Exec File")
+        self.mbox1.add_text(msgTxt)
+        self.mbox1.add_close_button()
         self.mbox1.add_event_cb(self.eMsgBox, lv.EVENT.VALUE_CHANGED, None)
         self.mbox1.center()
 
