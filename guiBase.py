@@ -16,7 +16,7 @@ class guiBase():
 
     def ta_event_cb(self,e,kb):
         code = e.get_code()
-        ta = e.get_target()
+        ta = e.get_current_target_obj()
         if code == lv.EVENT.FOCUSED:
             kb.taWidget=ta
         if code == lv.EVENT.DEFOCUSED:

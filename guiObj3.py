@@ -24,6 +24,7 @@ class guiObj3(guiBase):
     workingDir  = "prog"
     taDir       = None
     edit_file_name = True
+    # se usa en el combo para elegir el workingDir
     mDir = []
     cont_col2   = None
     
@@ -79,11 +80,11 @@ class guiObj3(guiBase):
 
     def guarda(self,e):
         if(self.file_name!=""):
+            longFileName = '/'+self.workingDir+'/'+self.file_name
             if(self.ta.get_text()!=""):
                 self.file_text=self.ta.get_text()
-                self.saveText(self.file_name)
+                self.saveText(longFileName)
             else:
-                longFileName = '/'+self.workingDir+'/'+self.file_name
                 os.remove(longFileName)
         else:
             print("con que nombre")
@@ -117,7 +118,10 @@ class guiObj3(guiBase):
         btns = [""]
         
         if(self.file_name==""):
-            mbox1 = lv.msgbox(lv.screen_active(), "Exec File", "Primero tienes que guardar el fichero", btns, True)
+            mbox1 = lv.msgbox(lv.screen_active())# "Exec File", "Primero tienes que guardar el fichero", btns, True)
+            mbox1.add_title("Exec File")
+            mbox1.add_text("Primero tienes que guardar el fichero")
+            mbox1.add_close_button()
             mbox1.add_event_cb(self.event_msgBox, lv.EVENT.VALUE_CHANGED, None)
             mbox1.center()
         else:
@@ -207,20 +211,7 @@ class guiObj3(guiBase):
         label_btn5.align_to(btn5, lv.ALIGN.TOP_LEFT, 0, -4)
         btn5.add_event_cb(lambda e: self.cls(e,self.ta,None), lv.EVENT.CLICKED, None)
 
-    def newDir(self,e,taDir,dd):
-        path='/'+self.taDir.get_text()
-        os.mkdir(path)
-        self.scanDir(dd)
 
-    def scanDir(self,dd):
-        self.mDir.clear()
-        for file in os.ilistdir('/'):
-            if file[1]== 0x4000 :
-                self.mDir.append(file[0])
-        dd.set_options("\n".join(self.mDir))
-        index=self.mDir.index(self.workingDir)
-        dd.set_selected(index)
-    
     def saveAs(self,e,ta):
         self.file_name=ta.get_text()
         longFileName  = '/'+self.workingDir+'/'+self.file_name
@@ -232,11 +223,25 @@ class guiObj3(guiBase):
         fichero = open(longFileName,"w")
         fichero.write(self.file_text)
         fichero.close()
-        self.file_name = longFileName
-                
-    def event_handler_DD(self,e):
+        
+
+    #creamos un nuevo directorio con el nombre del campo
+    def newDir(self,e,taDir,dd):
+        path='/'+self.taDir.get_text()
+        os.mkdir(path)
+        self.scanDir(dd)
+    # pone los directorios disponibles en el combo donde escogemos workingDir
+    def scanDir(self,dd):
+        self.mDir.clear()
+        for file in os.ilistdir('/'):
+            if file[1]== 0x4000 :
+                self.mDir.append(file[0])
+        dd.set_options("\n".join(self.mDir))
+        index=self.mDir.index(self.workingDir)
+        dd.set_selected(index)                
+    def eh_workingDir(self,e):
         code = e.get_code()
-        obj = e.get_target()
+        obj = e.get_current_target_obj()
         if code == lv.EVENT.VALUE_CHANGED: 
             self.workingDir = self.mDir[obj.get_selected()]
     
@@ -255,7 +260,7 @@ class guiObj3(guiBase):
         #dd.set_options("\n".join(["data"]))
         self.scanDir(dd)
         dd.align(lv.ALIGN.TOP_LEFT, 130, 23)
-        dd.add_event_cb(self.event_handler_DD, lv.EVENT.ALL, None)
+        dd.add_event_cb(self.eh_workingDir, lv.EVENT.ALL, None)
         
         
         label = lv.label(lv.screen_active())
@@ -280,7 +285,7 @@ class guiObj3(guiBase):
         self.taDir.set_text( "" )
         self.taDir.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
-        btn1 = lv.btn(lv.screen_active())
+        btn1 = lv.button(lv.screen_active())
         btn1.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 2, 212)
         btn1.set_size(75,25)
         label_btn1 = lv.label(btn1)
@@ -288,7 +293,7 @@ class guiObj3(guiBase):
         label_btn1.align_to(btn1, lv.ALIGN.TOP_LEFT, -2, -4)
         #btn1.add_event_cb(self.setDir, lv.EVENT.CLICKED, None)
         
-        btn2 = lv.btn(lv.screen_active())
+        btn2 = lv.button(lv.screen_active())
         btn2.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 81, 212)
         btn2.set_size(75,25)
         label_btn2 = lv.label(btn2)
@@ -296,7 +301,7 @@ class guiObj3(guiBase):
         label_btn2.set_text("Save as")
         btn2.add_event_cb(lambda e: self.saveAs(e,self.taFileName) , lv.EVENT.CLICKED, None)
         
-        btn3 = lv.btn(lv.screen_active())
+        btn3 = lv.button(lv.screen_active())
         btn3.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 161, 212)
         btn3.set_size(75,25)
         label_btn3 = lv.label(btn3)
@@ -304,7 +309,7 @@ class guiObj3(guiBase):
         label_btn3.set_text( "New Dir" )
         btn3.add_event_cb(lambda e: self.newDir(e,self.taDir,dd), lv.EVENT.CLICKED, None)
         
-        btn4 = lv.btn(lv.screen_active())
+        btn4 = lv.button(lv.screen_active())
         btn4.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 240, 212)
         btn4.set_size(75,25)
         label_btn4 = lv.label(btn4)
