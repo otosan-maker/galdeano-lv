@@ -5,7 +5,7 @@ from  myAppMenu import Gal_pantallas
 
 #####################################
 #
-#           PANTALLA
+#           PANTALLA MENU
 #
 #####################################
 

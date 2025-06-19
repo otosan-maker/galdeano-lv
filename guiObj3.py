@@ -5,7 +5,6 @@ import guiHeader
 from guiBase import guiBase
 import lvgl as lv
 import eigenmath
-import galdeanolib as gal
 import os
 
 class guiObj3(guiBase):

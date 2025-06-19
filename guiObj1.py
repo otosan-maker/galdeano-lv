@@ -3,7 +3,6 @@ import json
 import guiHeader
 from guiBase import guiBase
 import eigenmath
-import galdeanolib as gal
 import teclado
 
 class guiObj1(guiBase):

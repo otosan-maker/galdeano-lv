@@ -4,22 +4,29 @@ import eigenmath
 from math import ceil,sin,cos,tan,log,sqrt,exp,pi
 import random
 import teclado
-import galdeanolib as gal
 import json
 import guiHeader
 from guiBase import guiBase
 import time
-
+import sys
 
 class guiObj2(guiBase):
     def __init__(self):
         super().__init__()
+        if sys.platform == 'linux':
+            f=open('/home/angel/Documentos/GitHub/galdeano-lv/data/graf.txt','r')
+        else:
+            f=open('/data/graf.txt','r')
+        self.data = json.load(f)
+        f.close()
+
     
     def __new__(cls):
         if not hasattr(cls, 'instance'):
           cls.instance = super(guiObj2, cls).__new__(cls)
         return cls.instance
     
+    data = None
     Tpixel=0
     puntoLabel = None
     puntoCruz = None
@@ -52,7 +59,7 @@ class guiObj2(guiBase):
             self.puntoLabel.set_recolor(True)
             self.puntoCruz = lv.line(lv.screen_active())
             self.puntoCruz.set_points(line_points, 5)
-        rangoGraph=gal.data
+        rangoGraph=self.data
         if rangoGraph["parametric"] == lv.STATE.CHECKED:
             FXT=rangoGraph['function_x_t']
             FYT=rangoGraph['function_y_t']
@@ -107,7 +114,7 @@ class guiObj2(guiBase):
         self.puntoLabel.set_text("#ff0000 ("+str( Xgraph )+","+str( Ygraph )+")#")
 
     def calcPoints(self):
-        rangoGraph=gal.data
+        rangoGraph=self.data
         points =  [ ]
         
         if rangoGraph["parametric"] == lv.STATE.CHECKED:
@@ -159,7 +166,7 @@ class guiObj2(guiBase):
                 
     #hace unas sola llamada a eigenmath
     def calcPoints2(self):
-        rangoGraph=gal.data
+        rangoGraph=self.data
         points =  [ ]
         
         if rangoGraph["parametric"] == lv.STATE.CHECKED:
@@ -218,7 +225,7 @@ class guiObj2(guiBase):
                 
                 
     def execScreen(self):    
-        rangoGraph=gal.data
+        rangoGraph=self.data
         pointsY =  []
         pointsX =  []
         
@@ -333,34 +340,34 @@ class guiObj2(guiBase):
 #####################################
 
     def setGraph(self,event,ta,ta2,ta3,ta4,ta5,ta6,ta7,ta8,taXT,taYT):
-        gal.data["function"]     = ta.get_text(  )
-        gal.data["function_x_t"] = taXT.get_text(  )
-        gal.data["function_y_t"] = taYT.get_text(  )
-        gal.data["Xmax"]         = eval(ta2.get_text( ))
-        gal.data["Xmin"]         = eval(ta3.get_text( ))
-        gal.data["Ymax"]         = eval(ta4.get_text( ))
-        gal.data["Ymin"]         = eval(ta5.get_text( ))
-        gal.data["Tmax"]         = eval(ta6.get_text( ))
-        gal.data["Tmin"]         = eval(ta7.get_text( ))
-        gal.data["parametric"]   = ta8.get_state( )
+        self.data["function"]     = ta.get_text(  )
+        self.data["function_x_t"] = taXT.get_text(  )
+        self.data["function_y_t"] = taYT.get_text(  )
+        self.data["Xmax"]         = eval(ta2.get_text( ))
+        self.data["Xmin"]         = eval(ta3.get_text( ))
+        self.data["Ymax"]         = eval(ta4.get_text( ))
+        self.data["Ymin"]         = eval(ta5.get_text( ))
+        self.data["Tmax"]         = eval(ta6.get_text( ))
+        self.data["Tmin"]         = eval(ta7.get_text( ))
+        self.data["parametric"]   = ta8.get_state( )
         self.clearScreen()
         self.execScreen()
 
 
     def saveDataGraf(self,event,ta,ta2,ta3,ta4,ta5,ta6,ta7,ta8,taXT,taYT):
-        print(gal.data)
-        gal.data["function"]     = ta.get_text(  )
-        gal.data["function_x_t"] = taXT.get_text(  )
-        gal.data["function_y_t"] = taYT.get_text(  )
-        gal.data["Xmax"]         = eval(ta2.get_text( ))
-        gal.data["Xmin"]         = eval(ta3.get_text( ))
-        gal.data["Ymax"]         = eval(ta4.get_text( ))
-        gal.data["Ymin"]         = eval(ta5.get_text( ))
-        gal.data["Tmax"]         = eval(ta6.get_text( ))
-        gal.data["Tmin"]         = eval(ta7.get_text( ))
-        gal.data["parametric"]   = ta8.get_state()
+        print(self.data)
+        self.data["function"]     = ta.get_text(  )
+        self.data["function_x_t"] = taXT.get_text(  )
+        self.data["function_y_t"] = taYT.get_text(  )
+        self.data["Xmax"]         = eval(ta2.get_text( ))
+        self.data["Xmin"]         = eval(ta3.get_text( ))
+        self.data["Ymax"]         = eval(ta4.get_text( ))
+        self.data["Ymin"]         = eval(ta5.get_text( ))
+        self.data["Tmax"]         = eval(ta6.get_text( ))
+        self.data["Tmin"]         = eval(ta7.get_text( ))
+        self.data["parametric"]   = ta8.get_state()
         f=open('/data/graf.txt','w')
-        json.dump(gal.data,f)
+        json.dump(self.data,f)
         f.close()
 
     def cb_event_handler(self,e,ta,taXT,taYT):
@@ -381,8 +388,6 @@ class guiObj2(guiBase):
     def execScreenConf(self):
         self.miCabecera.strTitle="Galdeano graphics"
         self.miCabecera.setHeader()
-
-        data = gal.data
     
         miTeclado = teclado.teclado()
         miTeclado.graphCursor = None
@@ -401,7 +406,7 @@ class guiObj2(guiBase):
         taXT.set_placeholder_text( "x(t)=")
         taXT.add_style(styleTAInput, 0)
         taXT.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
-        taXT.set_text( str(data["function_x_t"]) )
+        taXT.set_text( str(self.data["function_x_t"]) )
         taYT = lv.textarea(lv.screen_active())
         taYT.align(lv.ALIGN.TOP_LEFT, 160, 23)
         taYT.set_one_line(True)
@@ -409,7 +414,7 @@ class guiObj2(guiBase):
         taYT.set_placeholder_text( "y(t)=")
         taYT.add_style(styleTAInput, 0)
         taYT.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
-        taYT.set_text( str(data["function_y_t"]) )
+        taYT.set_text( str(self.data["function_y_t"]) )
 
         #definimos el interfaz para funciones normales
         
@@ -420,9 +425,9 @@ class guiObj2(guiBase):
         ta.set_placeholder_text( "f(x)=")
         ta.add_style(styleTAInput, 0)
         ta.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
-        ta.set_text( str(data["function"]) )
+        ta.set_text( str(self.data["function"]) )
         
-        if data["parametric"] == lv.STATE.CHECKED:
+        if self.data["parametric"] == lv.STATE.CHECKED:
             ta.add_flag(ta.FLAG.HIDDEN)
         else:
             taXT.add_flag(taXT.FLAG.HIDDEN)
@@ -442,7 +447,7 @@ class guiObj2(guiBase):
         ta2.set_one_line(True)
         ta2.set_width(100)
         ta2.set_placeholder_text( "Max X")
-        ta2.set_text( str(data["Xmax"]) )
+        ta2.set_text( str(self.data["Xmax"]) )
         ta2.add_style(styleTAInput, 0)
         ta2.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
@@ -451,7 +456,7 @@ class guiObj2(guiBase):
         ta3.set_one_line(True)
         ta3.set_width(100)
         ta3.set_placeholder_text( "Min X")
-        ta3.set_text( str(data["Xmin"] ))
+        ta3.set_text( str(self.data["Xmin"] ))
         ta3.add_style(styleTAInput, 0)
         ta3.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
@@ -465,7 +470,7 @@ class guiObj2(guiBase):
         ta4.set_one_line(True)
         ta4.set_width(100)
         ta4.set_placeholder_text( "Max Y")
-        ta4.set_text( str(data["Ymax"]) )
+        ta4.set_text( str(self.data["Ymax"]) )
         ta4.add_style(styleTAInput, 0)
         ta4.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
@@ -474,7 +479,7 @@ class guiObj2(guiBase):
         ta5.set_one_line(True)
         ta5.set_width(100)
         ta5.set_placeholder_text( "Min Y")
-        ta5.set_text( str(data["Ymin"]) )
+        ta5.set_text( str(self.data["Ymin"]) )
         ta5.add_style(styleTAInput, 0)
         ta5.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
@@ -483,7 +488,7 @@ class guiObj2(guiBase):
         ta6.set_one_line(True)
         ta6.set_width(100)
         ta6.set_placeholder_text( "Max T")
-        ta6.set_text( str(data["Tmax"]) )
+        ta6.set_text( str(self.data["Tmax"]) )
         ta6.add_style(styleTAInput, 0)
         ta6.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
@@ -492,14 +497,14 @@ class guiObj2(guiBase):
         ta7.set_one_line(True)
         ta7.set_width(100)
         ta7.set_placeholder_text( "Min T")
-        ta7.set_text( str(data["Tmin"]) )
+        ta7.set_text( str(self.data["Tmin"]) )
         ta7.add_style(styleTAInput, 0)
         ta7.add_event_cb(lambda e: self.ta_event_cb(e,miTeclado), lv.EVENT.ALL, None)
         
         ta8 = lv.checkbox(lv.screen_active())
         ta8.set_text("Par")
         ta8.add_event_cb(lambda e: self.cb_event_handler(e,ta,taXT,taYT), lv.EVENT.ALL, None)
-        ta8.add_state(data["parametric"])
+        ta8.add_state(self.data["parametric"])
         ta8.align(lv.ALIGN.TOP_LEFT, 10, 146)
         ta8.add_style(styleLabelInp, 0)
         

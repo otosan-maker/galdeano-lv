@@ -2,7 +2,6 @@ import network
 import ubinascii
 import machine
 from machine import Timer
-from umqttsimple import MQTTClient
 import urequests
 import json
 
@@ -33,18 +32,6 @@ def getSSIDList():
     print(listSSID)
     return listSSID
 
-def connectMQTT():
-    global client
-    mqtt_server = '192.168.1.34'
-    msg         = 'lorrrr'
-    client_id = "galdeano"
-    print(str(ubinascii.hexlify(machine.unique_id())))
-    client = MQTTClient(client_id, mqtt_server)
-    client.connect()
-    
-def send_msg_MQTT(topic_pub,msg):
-    global client
-    client.publish(topic_pub, msg)
 
 def cibusTabulaConsulta(producto,localizacion):
     URL='http://192.168.1.34:1880/listado?localizacion='+str(localizacion)

@@ -45,8 +45,6 @@ class guiObj0(guiBase):
         self.miCabecera.strTitle="DEMO"
         self.miCabecera.setHeader()        
         
-        
-        
         ta = lv.textarea(lv.screen_active())
         ta.align(lv.ALIGN.TOP_LEFT, 0, 25)
         ta.set_one_line(True)
