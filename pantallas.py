@@ -1,6 +1,6 @@
 import lvgl as lv
 import teclado
-from  myAppMenu import Gal_pantallas
+from  myAppMenu import Gal_pantallas,img_pantallas
 
 
 #####################################
@@ -65,6 +65,7 @@ def select():
     print(btnm_map)
     pantalla_sel.align(lv.ALIGN.CENTER, 0, 0)
     pantalla_sel.add_event_cb(pantalla_sel_event_handler, lv.EVENT.ALL, None)
+
 
 
 def openWifiConf():

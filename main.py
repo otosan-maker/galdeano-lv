@@ -36,7 +36,11 @@ else:
     tim0.init(period=100, mode=machine.Timer.PERIODIC, callback=lambda t:miTeclado.key_loop())
 
 #comun arranque
-import guiObj1
+# import guiObj1
+# meGuiObj = guiObj1.guiObj1()
+# meGuiObj.execScreen()
 
-meGuiObj = guiObj1.guiObj1()
+#pruebas finder
+import finder
+meGuiObj = finder.finder()
 meGuiObj.execScreen()

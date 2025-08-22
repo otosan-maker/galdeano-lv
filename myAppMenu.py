@@ -3,8 +3,10 @@ import guiObj2
 import guiObj3
 import guiObj0
 
-Gal_pantallas = [{"Name":"Calculadora","function":guiObj1.guiObj1}
-                 ,{"Name":"Editor","function":guiObj3.guiObj3 }
-                 ,{"Name":"Graficas","function":guiObj2.guiObj2}
-                 ,{"Name":"Demo","function":guiObj0.guiObj0}
+Gal_pantallas = [{"Name":"Calculadora","function":guiObj1.guiObj1,"icon":"calculadora.png"}
+                 ,{"Name":"Editor","function":guiObj3.guiObj3 ,"icon":"boligrafo.png"}
+                 ,{"Name":"Graficas","function":guiObj2.guiObj2,"icon":"graficas.png"}
+                 ,{"Name":"Demo","function":guiObj0.guiObj0,"icon":"puzzle.png"}
                  ]
+
+img_pantallas = ["boligrafo.png"]
