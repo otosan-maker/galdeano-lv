@@ -46,7 +46,7 @@ class teclado:
     idMode=1
     idCntl=False
     
-    taWidget    = None
+    taWidget    = None  # el textarea donde escribimos los caracteres
     modeWidget  = None
     cntWidget   = None
     groupWidget = None

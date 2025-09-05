@@ -18,6 +18,9 @@ class finder(guiBase):
         super().__init__()
     # window msg code
     btns = ["Close",  ""]
+    
+    lastAppExec = None
+    
     def eMsgBox(self,e):
         mbox = e.get_current_target()
         self.mbox1.close()
@@ -37,7 +40,11 @@ class finder(guiBase):
         for pantalla in appMenu.Gal_pantallas:
             if pantalla['Name'] == txt:
                 meGuiObj = pantalla['function']()
-                meGuiObj.clearScreen()
+                if self.lastAppExec != None:
+                    self.lastAppExec.clearScreen()
+                else:
+                    self.clearScreen()
+                self.lastAppExec = meGuiObj
                 miTeclado.ObjActive = meGuiObj
                 meGuiObj.execScreen()
                 
@@ -92,10 +99,6 @@ class finder(guiBase):
                 labelGaldeano = lv.label(tbl_iconos)
                 labelGaldeano.set_text("NO IMG")
                 labelGaldeano.set_grid_cell(lv.GRID_ALIGN.CENTER, index%4, 1,lv.GRID_ALIGN.CENTER, index//4, 1)
-        
-
-        
-
         # we will exec this function when we press exe button
         miTeclado.execFunc = lambda e: self.exeButton(e,"exec button pressed")
         miTeclado.selectMenuFunc=self.execScreen
@@ -108,3 +111,8 @@ class finder(guiBase):
         label = lv.label(lv.screen_active())
         label.set_text("configuration screen DEMO")
         label.center()
+    
+    def clearScreen(self):
+        super().clearScreen()
+        miTeclado = teclado.teclado()
+        miTeclado.graphCursor = None

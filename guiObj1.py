@@ -141,5 +141,6 @@ class guiObj1(guiBase):
             self.taText = self.ta.get_text()
         super().clearScreen()
         self.ta=None
-
+        miTeclado = teclado.teclado()
+        miTeclado.graphCursor = None
         
