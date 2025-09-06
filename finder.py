@@ -102,14 +102,14 @@ class finder(guiBase):
         # we will exec this function when we press exe button
         miTeclado.execFunc = lambda e: self.exeButton(e,"exec button pressed")
         miTeclado.selectMenuFunc=self.execScreen
-        
+        miTeclado.ObjActive = self
             
     
     def execScreenConf(self):
-        self.miCabecera.strTitle="DEMO"
+        self.miCabecera.strTitle="FINDER"
         self.miCabecera.setHeader()
         label = lv.label(lv.screen_active())
-        label.set_text("configuration screen DEMO")
+        label.set_text("configuration screen FINDER")
         label.center()
     
     def clearScreen(self):

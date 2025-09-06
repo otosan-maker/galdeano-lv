@@ -47,14 +47,12 @@ class teclado:
     idCntl=False
     
     taWidget    = None  # el textarea donde escribimos los caracteres
-    modeWidget  = None
-    cntWidget   = None
-    groupWidget = None
-    outputWidget= None
-    execFunc    = None
-    ObjActive   = None
-    graphCursor = None  #gestiona los cursores en modo grafico
-    selectMenuFunc = None
+    modeWidget  = None	# textarea (del header) donde ponemos en que modo esta el teclado
+    cntWidget   = None  # textarea (del header) donde ponemos que estamos en la pantalla de cfg
+    execFunc    = None  # la funcion que ejecutamos cuando pulsamos exec
+    ObjActive   = None	# la pantalla que estamos usando, para poder poner el modo cfg
+    graphCursor = None  # gestiona los cursores en modo grafico
+    selectMenuFunc = None # la funcion que llamamos cuando vamos al lanzador
     strLastKey  =  ['a']
     lastKeyPressed = 0
     keyPressed = 0
