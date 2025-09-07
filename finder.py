@@ -25,10 +25,9 @@ class finder(guiBase):
         mbox = e.get_current_target()
         self.mbox1.close()
     def exeButton(self,event,msgTxt):
-        self.mbox1 = lv.msgbox(lv.screen_active())#, "MSG", msgTxt , self.btns, True)
-        img = event.get_target_obj()
+        self.mbox1 = lv.msgbox(lv.screen_active())
         self.mbox1.add_title("Exec File")
-        self.mbox1.add_text("pulse la img "+img.get_child(0).get_text())
+        self.mbox1.add_text(msgTxt)
         self.mbox1.add_close_button()
         self.mbox1.add_event_cb(self.eMsgBox, lv.EVENT.VALUE_CHANGED, None)
         self.mbox1.center()
@@ -103,6 +102,7 @@ class finder(guiBase):
         miTeclado.execFunc = lambda e: self.exeButton(e,"exec button pressed")
         miTeclado.selectMenuFunc=self.execScreen
         miTeclado.ObjActive = self
+         
             
     
     def execScreenConf(self):
@@ -111,7 +111,17 @@ class finder(guiBase):
         label = lv.label(lv.screen_active())
         label.set_text("configuration screen FINDER")
         label.center()
-    
+        # List the information from a .zip archive
+        from zipfile import ZipFile, ZIP_DEFLATED, ZIP_STORED
+        print('\nListing information')
+        with ZipFile("/readme.zip", 'r') as archive: 
+            for info in archive.infolist(): 
+                print(info.filename)
+                print('\tSystem:\t\t' + str(info.create_system) + '(0 = Windows, 3 = Unix)') 
+                print('\tZIP version:\t' + str(info.create_version)) 
+                print('\tCompressed:\t' + str(info.compress_size) + ' bytes') 
+                print('\tUncompressed:\t' + str(info.file_size) + ' bytes')
+        
     def clearScreen(self):
         super().clearScreen()
         miTeclado = teclado.teclado()
