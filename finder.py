@@ -4,7 +4,7 @@ import teclado
 import guiHeader
 import myAppMenu as appMenu
 from guiBase import guiBase
-
+import sys
     
 
 #####################################
@@ -79,9 +79,13 @@ class finder(guiBase):
         tbl_iconos.align_to(lv.screen_active(), lv.ALIGN.TOP_LEFT, 0, 21)
         tbl_iconos.set_grid_dsc_array(col_dsc, row_dsc)
         tbl_iconos.add_style(style,0)
+        if sys.platform == 'linux':
+            IMGPATH = "/home/angel/Documentos/Github/galdeano-lv/img/"
+        else:
+            IMGPATH = "/img/"
         for index,item in enumerate(appMenu.Gal_pantallas):
             try:
-                some_image_data = self.get_image_data("/img/"+item["icon"])
+                some_image_data = self.get_image_data(IMGPATH+item["icon"])
                 some_image_data_mv = memoryview(some_image_data)
                 some_img_dsc = self.create_img_dsc(some_image_data_mv)
                 img1 = lv.image(tbl_iconos)

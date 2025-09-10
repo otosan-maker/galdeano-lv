@@ -15,6 +15,7 @@ if sys.platform == 'linux':
         display_width=_WIDTH,
         display_height=_HEIGHT,
         frame_buffer1=buf1,
+		color_byte_order=sdl_display.BYTE_ORDER_BGR,
         color_space=lv.COLOR_FORMAT.RGB888
     )
     display.init()
