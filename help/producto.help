@@ -1,0 +1,3 @@
+product(i, j, k, f ) returns
+
+multiplications from i=j to i=k of f(i)

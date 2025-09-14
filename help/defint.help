@@ -1,0 +1,4 @@
+defint(f, x, a, b, . . .) returns the definite integral
+of f with respect to x evaluated from a to b.
+The argument list can be extended for multiple integrals.
+For example, d(f, x, a, b, y, c, d).

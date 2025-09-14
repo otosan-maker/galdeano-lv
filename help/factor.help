@@ -1,0 +1,10 @@
+factor(n) factors the integer n.
+factor(12345)
+3 × 5 × 823
+f actor(p, x) factors polynomial p in x.
+The last argument can be omitted for polynomials in x.
+The argument list can be extended for multivariate polynomials.
+For example, factor(p, x, y) factors p over
+x and then over y.
+factor(125*x^3-1)
+(5x − 1)(25x2 + 5x + 1)
