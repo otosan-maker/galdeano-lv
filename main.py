@@ -22,8 +22,10 @@ if sys.platform == 'linux':
 
     import sdl_pointer
     import task_handler
-
+    import sdl_keyboard
+    
     mouse = sdl_pointer.SDLPointer()
+    keyboard = sdl_keyboard.SDLKeyboard()
 
     # the duration needs to be set to 5 to have a good response from the mouse.
     # There is a thread that runs that facilitates double buffering. 
@@ -37,9 +39,9 @@ else:
     tim0.init(period=100, mode=machine.Timer.PERIODIC, callback=lambda t:miTeclado.key_loop())
 
 #comun arranque
-# import guiObj1
-# meGuiObj = guiObj1.guiObj1()
-# meGuiObj.execScreen()
+#import guiObj1
+#meGuiObj = guiObj1.guiObj1()
+#meGuiObj.execScreen()
 
 #pruebas finder
 import finder

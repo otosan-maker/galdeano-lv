@@ -49,8 +49,9 @@ class guiObj1(guiBase):
 
     def execScreen(self):
         miTeclado = teclado.teclado()
-        import pantallas
+        
         if miTeclado.selectMenuFunc == None:
+            import pantallas
             miTeclado.selectMenuFunc=pantallas.select
         
         #Interfaz grafico
