@@ -15,6 +15,7 @@ if HOSTTYPE.find("GALDEANO CLASSIC") >=0:
     csPIN   = 15
     rstPIN  = 4
     cs_touch = 21
+    tactil = 'xpt2046'
 elif HOSTTYPE.find("GALDEANO CIVER") >=0:
     mosiPIN = 11
     misoPIN = 13
@@ -23,6 +24,16 @@ elif HOSTTYPE.find("GALDEANO CIVER") >=0:
     csPIN   = 10
     rstPIN  = 14
     cs_touch = 15
+    tactil = 'xpt2046'
+elif HOSTTYPE.find("GALDEANO M5") >=0:
+    mosiPIN = 23
+    misoPIN = 38
+    sckPIN  = 18
+    dcPIN   = 15
+    csPIN   = 5
+    rstPIN  = None
+    cs_touch = None
+    tactil = 'ft6x36'
 else:
     print("NO GRAFICS")
 
@@ -52,16 +63,20 @@ display = ili9341.ILI9341(
 )
 
 display.init(2)
+if tactil == 'xpt2046':
+    import xpt2046
+    touch_dev = SPI.Device(
+        spi_bus=spi_bus,
+        freq=100000,
+        cs=cs_touch
+    )
 
-import xpt2046
-touch_dev = SPI.Device(
-    spi_bus=spi_bus,
-    freq=100000,
-    cs=cs_touch
-)
-
-indev = xpt2046.XPT2046(touch_dev)
-
+    indev = xpt2046.XPT2046(touch_dev)
+elif tactil == 'ft6x36':
+    from ft6x36 import ft6x36
+    touch = ft6x36(width=320, height=280)
+    indev = ft6x36.ft6x36()
+    
 if not indev.is_calibrated:
     display.set_backlight(100)
     indev.calibrate()
