@@ -15,10 +15,10 @@ class teclado:
             if HOSTTYPE== 'GALDEANO M5 DEV with ESP32':
                 import tecladoM5
                 cls.instance = tecladoM5.teclado()
-            elif HOSTTYPE== 'GALDEANO CLASSIC DEV with ESP32':
+            elif HOSTTYPE== 'GALDEANO CLASSIC DEV with ESP32' or HOSTTYPE== 'GALDEANO CLASSIC with ESP32':
                 import tecladoCLASSIC
                 cls.instance =tecladoCLASSIC.teclado()
-            elif HOSTTYPE== 'GALDEANO CIVER with ESP32S3':
+            elif HOSTTYPE== 'GALDEANO CIVER with ESP32S3' or HOSTTYPE== 'GALDEANO CIVER DEV with ESP32S3':
                 import tecladoCIVER
                 cls.instance =tecladoCIVER.teclado()
             super(teclado, cls).__new__(cls)
