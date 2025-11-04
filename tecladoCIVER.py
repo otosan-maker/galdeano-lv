@@ -13,11 +13,11 @@ class teclado:
           cls.instance = super(teclado, cls).__new__(cls)
         return cls.instance
 
-    F1 = Pin(02, Pin.OUT)
-    F2 = Pin(04, Pin.OUT)
-    F3 = Pin(06, Pin.OUT)
-    F4 = Pin(07, Pin.OUT)
-    F5 = Pin(03, Pin.OUT)
+    F1 = Pin(2, Pin.OUT)
+    F2 = Pin(4, Pin.OUT)
+    F3 = Pin(6, Pin.OUT)
+    F4 = Pin(7, Pin.OUT)
+    F5 = Pin(3, Pin.OUT)
     F6 = Pin(21, Pin.OUT)
     F7 = Pin(47, Pin.OUT)
     
@@ -29,7 +29,7 @@ class teclado:
     F6.off()
     F7.off()
     
-    C1 = Pin(05, Pin.IN, Pin.PULL_DOWN)
+    C1 = Pin(5, Pin.IN, Pin.PULL_DOWN)
     C2 = Pin(38, Pin.IN, Pin.PULL_DOWN)
     C3 = Pin(39, Pin.IN, Pin.PULL_DOWN)
     C4 = Pin(40, Pin.IN, Pin.PULL_DOWN)
